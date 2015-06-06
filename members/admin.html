@@ -56,6 +56,25 @@ if ($account === false) {
 	<!-- Custom Fonts -->
 	<link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+	<?php
+		if (isset($_SESSION['status'])) {
+			echo '<script type="text/javascript">alert("';
+			switch ($_SESSION['status']) {
+				case 'success':
+					echo 'Your service has successfully been sent for review!';
+					break;
+				case 'invalid':
+					echo 'One or more of the inputs for your service application was received invalidly. Please try again.';
+					break;
+				case 'error':
+					echo 'An unexpected error has occurred while trying to process your request. Please try again.';
+					break;
+			}
+			echo '");</script>';
+			unset($_SESSION['status']);
+		}
+	?>
+
 </head>
 
 <body>
@@ -69,7 +88,7 @@ if ($account === false) {
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="index.html">National Honors Society</a>
+			<a class="navbar-brand">National Honors Society</a>
 		</div>
 		<!-- /.navbar-header -->
 		 <ul class="nav navbar-top-links navbar-right">
@@ -79,29 +98,13 @@ if ($account === false) {
 				</a>
 				<ul class="dropdown-menu dropdown-tasks">
 					<?php
-						$tutoring_percent = round(($account['tutoring'] > 5 ? 5 : $account['tutoring']) * 20);
 						$community_percent = round(($account['community'] > 10 ? 10 : $account['community']) * 10);
+						$tutoring_percent = round(($account['tutoring'] > 5 ? 5 : $account['tutoring']) * 20);
 						$total_percent = round((($account['tutoring'] > 5 ? 5 : $account['tutoring']) + ($account['community'] > 10 ? 10 : $account['community']) + ($account['tutoring'] + $account['community'] - 15)) * 5);
 						if ($total_percent > 100) $total_percent = 100;
 					?>
 					<li>
-						<a href="#">
-							<div>
-								<p>
-									<strong>Tutoring</strong>
-									<span class="pull-right text-muted"><?php echo $tutoring_percent; ?>% Complete</span>
-								</p>
-								<div class="progress progress-striped active">
-									<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $tutoring_percent; ?>%">
-										<span class="sr-only"><?php echo $tutoring_percent; ?>% Complete</span>
-									</div>
-								</div>
-							</div>
-						</a>
-					</li>
-					<li class="divider"></li>
-					<li>
-						<a href="#">
+						<a>
 							<div>
 								<p>
 									<strong>Community Service</strong>
@@ -117,7 +120,23 @@ if ($account === false) {
 					</li>
 					<li class="divider"></li>
 					<li>
-						<a href="#">
+						<a>
+							<div>
+								<p>
+									<strong>Tutoring</strong>
+									<span class="pull-right text-muted"><?php echo $tutoring_percent; ?>% Complete</span>
+								</p>
+								<div class="progress progress-striped active">
+									<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $tutoring_percent; ?>%">
+										<span class="sr-only"><?php echo $tutoring_percent; ?>% Complete</span>
+									</div>
+								</div>
+							</div>
+						</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a>
 							<div>
 								<p>
 									<strong>Total Hours</strong>
@@ -167,28 +186,6 @@ if ($account === false) {
 
 		<div class="row">
 			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-red">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-3">
-								<i class="fa fa-university fa-5x"></i>
-							</div>
-							<div class="col-xs-9 text-right">
-								<div class="huge"><?php echo $account['tutoring']; ?></div>
-								<div>Tutoring Hours</div>
-							</div>
-						</div>
-					</div>
-					<a href="#">
-						<div class="panel-footer">
-							<span class="pull-left">View Details</span>
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-6">
 				<div class="panel panel-yellow">
 					<div class="panel-heading">
 						<div class="row">
@@ -210,11 +207,79 @@ if ($account === false) {
 					</a>
 				</div>
 			</div>
+			<div class="col-lg-6 col-md-6">
+				<div class="panel panel-red">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-3">
+								<i class="fa fa-university fa-5x"></i>
+							</div>
+							<div class="col-xs-9 text-right">
+								<div class="huge"><?php echo $account['tutoring']; ?></div>
+								<div>Tutoring Hours</div>
+							</div>
+						</div>
+					</div>
+					<a href="#">
+						<div class="panel-footer">
+							<span class="pull-left">View Details</span>
+							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+					</a>
+				</div>
+			</div>
 		</div>
 		<!-- /.row -->
 
 		<div class="row">
 			<div class="col-lg-8">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="fa fa-pencil fa-fw"></i> Record Hours
+					</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<form role="form" action="logHours.php" method="POST">
+									<div class="row">
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label>Service Date</label>
+												<input class="form-control" type="date" name="date" max="<?php echo date('Y-d-m'); ?>" value="<?php echo date('Y-m-d'); ?>">
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label>Type of Service</label>
+												<select class="form-control" name="service">
+													<option selected>Community Service</option>
+													<option>Tutoring</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label>Hours Worked</label>
+												<input class="form-control" type="number" name="hours" min="0.25" max="20" step="0.25">
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label>Description</label>
+										<textarea class="form-control" name="description" rows="3" placeholder="Use this section to talk a little about what you did to earn this service. The more detailed you are, the more likely it will be approved!"></textarea>
+									</div>
+									<button type="submit" class="btn btn-default">Request Approval</button>
+								</form>
+							</div>
+							<!-- /.col-lg-12 (nested) -->
+						</div>
+						<!-- /.row -->
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<i class="fa fa-bar-chart-o fa-fw"></i> Hour Log History
@@ -236,20 +301,27 @@ if ($account === false) {
 										</thead>
 										<tbody>
 											<?php
-												if (strlen($account['approved']) === 0) {
+												if (strlen($account['waiting']) === 0 && strlen($account['processed']) === 0) {
 													echo '<tr><td colspan="5">No service documented.</td></tr>';
-												} else {
-													$entries = explode(';', $account['approved']);
+													return;
+												}
+												$types = array('waiting', 'processed');
+												for ($i = 0; $i < 2; $i++) {
+													$entries = explode(';', $account[$types[$i]]);
 													foreach ($entries as $entry) {
 														$components = explode('::', $entry);
-														if (sizeof($components) !== 5) continue;
+														if (sizeof($components) !== ($i === 0 ? 4 : 5)) continue;
+														$desc = $components[3];
+														$desc = str_replace('[double colon]', '::', $desc);
+														$desc = str_replace('[semicolon]', ';', $desc);
+														$desc = str_replace('[quote]', '"', $desc);
 														echo '
 											<tr>
 												<td>' . $components[0] . '</td>
-												<td>' . $components[1] . '</td>
+												<td>' . ($components[1] === 'tutoring' ? 'Tutoring' : 'Community Service') . '</td>
 												<td><center>' . $components[2] . '</center></td>
-												<td>' . $components[3] . '</td>
-												<td><center><i class="fa fa-' . $components[4] . ' fa-fw"></i></center></td>
+												<td>' . $desc . '</td>
+												<td><center><i class="' . ($i === 0 ? 'glyphicon glyphicon-hourglass' : 'fa fa-' . $components[4] . ' fa-fw') . '"></i></center></td>
 											</tr>' . "\n";
 													}
 												}

@@ -1,4 +1,5 @@
 <?php
+session_start();
 $username = $_POST['username'];
 $password = $_POST['password'];
 $success = false;
@@ -22,7 +23,7 @@ try {
 			$stmt = $dbh->prepare('UPDATE nhs_members SET token = "' .  $token . '" WHERE username = :username');
 			$stmt->bindParam(':username', $username, PDO::PARAM_INT);
 			$stmt->execute();
-			setcookie('token', $code, 0);
+			$_SESSION['token'] = $code;
 			header('Location: http://confiqure.uphero.com/nhs/members/');
 		} else {
 			header("Location: http://confiqure.uphero.com/nhs/members/?username=$username");

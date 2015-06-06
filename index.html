@@ -1,0 +1,320 @@
+<?php
+$account_combined = false;
+$max_combined = 0;
+$account_tutoring = false;
+$max_tutoring = 0;
+$account_community = false;
+$max_community = 0;
+require_once('dbconfig.php');
+try {
+	$dbh = new PDO($driver, $user, $pass, $attr);
+	try {
+		$stmt = $dbh->prepare('SELECT studentname,tutoring,community FROM nhs_members');
+		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			if ($row['tutoring'] + $row['community'] > $max_combined) {
+				$account_combined = $row;
+				$max_combined = $row['tutoring'] + $row['community'];
+			}
+			if ($row['tutoring'] > $max_tutoring) {
+				$account_tutoring = $row;
+				$max_tutoring = $row['tutoring'];
+			}
+			if ($row['community'] > $max_community) {
+				$account_community = $row;
+				$max_community = $row['community'];
+			}
+			break;
+		}
+		unset($stmt);
+	} catch (Exception $f) {
+		echo "Exception: " . $f->getMessage() . "<br />";
+	}
+} catch (Exception $e) {
+	$recipient = "dwheelerw@gmail.com";
+	$subject = "ERROR - SQL Connection";
+	$mail_body = "An exception occurred on the NHS homepage: " . $e->getMessage();
+	mail($recipient, $subject, $mail_body);
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A platform for communication and organization of the Bow High School's chapter of the National Honors Society">
+	<meta name="author" content="Dylan Wheeler">
+
+	<title>National Honors Society</title>
+
+	<!-- Bootstrap Core CSS -->
+	<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Custom CSS -->
+	<link href="css/business-frontpage.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<!-- Navigation -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="members/#">Members Login</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="#about">About</a>
+					</li>
+					<li>
+						<a href="#members">Members</a>
+					</li>
+					<li>
+						<a href="#services">Services</a>
+					</li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<!-- Image Background Page Header -->
+	<!-- Note: The background image is set within the business-casual.css file. -->
+	<header class="business-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h4 class="tagline">&nbsp;</h4>
+				</div>
+			</div>
+        <img class="img-responsive img-center" src="images/logo.png" alt="">
+	</header>
+
+	<!-- Page Content -->
+	<div class="container">
+
+		<section id="about" class="container content-section">
+
+			<hr />
+
+			<div class="row">
+				<div class="col-sm-8">
+					<h2>What We Do</h2>
+					<p>The National Honors Society is a group of honors students at Bow High School who have been carefully picked to represent our school.  The National Honors Society handles most of the volunteering that the school does for organizations as well as provides free tutoring services to the school.</p>
+				</div>
+				<div class="col-sm-4">
+					<h2>Advisors</h2>
+					<address>
+						<strong>William Dodge</strong>
+						<br />Integrated Geometry Teacher
+						<br />Pre-Calculus and Calculus Teacher
+						<br />Math Team Advisor
+						<br /><a href="mailto:wdodge@bownet.org">wdodge@bownet.org</a>
+					</address>
+					<address>
+						<strong>Lily Woo</strong>
+						<br />World Studies Teacher
+						<br />AP European History Teacher
+						<br /><a href="mailto:lwoo@bownet.org">lwoo@bownet.org</a>
+					</address>
+				</div>
+			</div>
+			<!-- /.row -->
+
+			<hr />
+
+			<div class="row">
+				<div class="col-sm-3">
+					<img class="img-circle img-responsive img-center" src="images/character.png" alt="">
+					<h2>Character</h2>
+					<p>Character is what distinguishes one individual from another. It is the product of constant striving to make the right choices day after day. Students with good character demonstrate respect, responsibility, trustworthiness, fairness, caring, and citizenship in all of their actions.</p>
+				</div>
+				<div class="col-sm-3">
+					<img class="img-circle img-responsive img-center" src="images/scholarship.png" alt="">
+					<h2>Scholarship</h2>
+					<p>Scholarship is characterized by a commitment to learning. A student is willing to spend the necessary time to cultivate his/ her mind in the quest for knowledge. This pillar can only be achieved through diligence and effort. Scholarship means always doing the best work possible, regardless of impending reward.</p>
+				</div>
+				<div class="col-sm-3">
+					<img class="img-circle img-responsive img-center" src="images/leadership.png" alt="">
+					<h2>Leadership</h2>
+					<p>Leaders take the initiative to aid others in a wholesome manner throughout their daily activities. Leaders sacrifice their personal interests in order to yield to the needs of others. Leaders need wisdom and self-confidence to affect change in all aspects of their lives.</p>
+				</div>
+				<div class="col-sm-3">
+					<img class="img-circle img-responsive img-center" src="images/service.png" alt="">
+					<h2>Service</h2>
+					<p>The pillar of service can be reached in a variety of ways. The willingness to work for the benefit of those in need without compensation or recognition of any kind is a quality that is essential in NHS members. As a service club, the National Honor Society is highly concerned with giving its all to the school and community at large.</p>
+				</div>
+			</div>
+			<!-- /.row -->
+		</section>
+
+		<section id="members" class="container content-section">
+
+			<hr />
+
+			<div class="row">
+				<div class="col-sm-6">
+
+					<h2>Chapter Officers</h2>
+
+					<div class="row">
+						<div class="col-sm-2">
+							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
+						</div>
+						<div class="col-sm-10">
+							<p><strong>President:</strong> Hayden Udelson is the President for the 2015-2016 school year. As President, Hayden will be leading NHS in the group meetings. He has been an avid member of Bow High School for the past three years and looks forward to finishing with a very productive year.</p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2">
+							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
+						</div>
+						<div class="col-sm-10">
+							<p><strong>VP:</strong> Sohani Demian will become President next year. She is spending this year in training and will do very wonderfu things as pres next year!! I need some sort of bio for her...</p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2">
+							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
+						</div>
+						<div class="col-sm-10">
+							<p><strong>Secretary:</strong> Placeholder text</p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2">
+							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
+						</div>
+						<div class="col-sm-10">
+							<p><strong>Treasurer:</strong> Owen Molind ... placeholder text</p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2">
+							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
+						</div>
+						<div class="col-sm-10">
+							<p><strong>Parliamentarian:</strong> Placeholder text</p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2">
+							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
+						</div>
+						<div class="col-sm-10">
+							<p><strong>Webmaster:</strong> Dylan Wheeler manages and maintains the online platform for all NHS members to communicate and stay organized. He has been programming for six years, two of which have been for web development.</p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2">
+							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
+						</div>
+						<div class="col-sm-10">
+							<p><strong>Historian:</strong> Placeholder text</p>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-sm-6">
+					<h2>Chapter Members</h2>
+					<p>The Bow High School Chapter of the National Honor Society is filled with brilliant young minds looking to make a difference in their school. The school's members come from the junior and senior classes and represent the best BHS has to offer. The following list of members is orgaized alphabetically by last name:</p>
+				</div>
+
+			</div>
+		</section>
+
+		<section id="noteworthy" class="container content-section">
+
+			<hr />
+
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Noteworthy Members</h2>
+					<div class="row">
+						<div class="col-sm-4">
+							<p><?php echo $account_combined['studentname'] . ' has been proven a noteworthy member of the Society by amassing a total of <strong>' . $max_combined . '</strong> hours of tutoring and community service! This is the highest combined total of any of our members. Congratulations!';?></p>
+						</div>
+						<div class="col-sm-4">
+							<p><?php echo $account_tutoring['studentname'] . ' has earned the title of Most Tutoring Completed by donating <strong>' . $max_tutoring . '</strong> hours toward benefiting the education of fellow peers! Well done!';?></p>
+						</div>
+						<div class="col-sm-4">
+							<p><?php echo $account_community['studentname'] . ' has given back to the community by volunteering through the Society earning <strong>' . $max_community . '</strong> hours! This is the most community service done by any of our members. Awesome job!';?></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="services" class="container content-section">
+
+			<hr />
+
+			<div class="row">
+				<div class="col-sm-6">
+					<h2>Volunteering</h2>
+					<p>If you have any requests for volunteering hands, email one of the Chapter's advisors. Contact information is provided <a href="#about">above</a>.</p>
+				</div>
+				<div class="col-sm-6">
+					<h2>Tutoring</h2>
+					<p>If you or your child needs tutoring, take a moment to fill out <a href="https://docs.google.com/a/bownet.org/forms/d/1sSI9VPPaCWIM0G4fuuHLF9PKEgDfOqSh6r9ENGoOXJ0/" title="_blank">this Google Form</a>. Your requests will be met very soon as the society finds a member best suited for your help!</p>
+				</div>
+			</div>
+		</section>
+
+        <p>&nbsp;</p><img class="img-responsive img-center" src="images/logo.png" width="125" alt=""><p>&nbsp;</p>
+
+		<section id="contact" class="container content-section">
+
+			<div class="row">
+				<div class="col-lg-12">
+					<h2>Contact</h2>
+					<p>If there are any problems with this website, you have a suggestion for content, or you wish to contact me about other computer-related things, I can be reached at <a href="mailto:dwheelerw@gmail.com">dwheelerw@gmail.com</a>.</p>
+				</div>
+			</div>
+		</section>
+		
+		<hr>
+
+		<!-- Footer -->
+		<footer>
+			<div class="row">
+				<div class="col-lg-12">
+					<p>Copyright &copy; Bow High School 2015</p>
+				</div>
+			</div>
+			<!-- /.row -->
+		</footer>
+
+	</div>
+	<!-- /.container -->
+
+	<!-- jQuery -->
+	<script src="bower_components/jquery/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

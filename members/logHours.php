@@ -25,10 +25,10 @@ try {
 			return;
 		}
 		$desc = $_POST['description'];
-		$desc = str_replace('::', '[double colon]', $desc);
-		$desc = str_replace(';', '[semicolon]', $desc);
-		$desc = str_replace('"', '[quote]', $desc);
-		$new = $date[1] . '/' . $date[2] . '/' . $date[0] . '::' . ($_POST['service'] === 'Tutoring' ? 'tutoring' : 'community') . '::' . $_POST['hours'] . '::' . $desc . ';';
+		$desc = str_replace(',', '/[c]/', $desc);
+		$desc = str_replace(';', '/[s]/', $desc);
+		$desc = str_replace('"', '/[q]/', $desc);
+		$new = $date[1] . '/' . $date[2] . '/' . $date[0] . ',' . ($_POST['service'] === 'Tutoring' ? 'tutoring' : 'community') . ',' . $_POST['hours'] . ',' . $desc . ',' . $_POST['contact'] . ';';
 		$stmt = $dbh->prepare('UPDATE nhs_members SET waiting = "' .  $new . $account['waiting'] . '" WHERE username = "' . $account['username'] . '"');
 		$stmt->execute();
 		unset($stmt);

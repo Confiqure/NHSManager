@@ -1,28 +1,28 @@
 <?php
 $account_combined = false;
 $max_combined = 0;
-$account_tutoring = false;
-$max_tutoring = 0;
 $account_community = false;
 $max_community = 0;
+$account_tutoring = false;
+$max_tutoring = 0;
 require_once('dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	try {
-		$stmt = $dbh->prepare('SELECT studentname,tutoring,community FROM nhs_members');
+		$stmt = $dbh->prepare('SELECT studentname,community,tutoring FROM nhs_members');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			if ($row['tutoring'] + $row['community'] > $max_combined) {
 				$account_combined = $row;
 				$max_combined = $row['tutoring'] + $row['community'];
 			}
-			if ($row['tutoring'] > $max_tutoring) {
-				$account_tutoring = $row;
-				$max_tutoring = $row['tutoring'];
-			}
 			if ($row['community'] > $max_community) {
 				$account_community = $row;
 				$max_community = $row['community'];
+			}
+			if ($row['tutoring'] > $max_tutoring) {
+				$account_tutoring = $row;
+				$max_tutoring = $row['tutoring'];
 			}
 			break;
 		}
@@ -171,74 +171,29 @@ try {
 
 					<h2>Chapter Officers</h2>
 
-					<div class="row">
-						<div class="col-sm-2">
-							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
-						</div>
-						<div class="col-sm-10">
-							<p><strong>President:</strong> Hayden Udelson is the President for the 2015-2016 school year. As President, Hayden will be leading NHS in the group meetings. He has been an avid member of Bow High School for the past three years and looks forward to finishing with a very productive year.</p>
-						</div>
-					</div>
+					<p><strong>President:</strong> Hayden Udelson is the President for the 2015-2016 school year. As President, Hayden will be leading NHS in the group meetings. He has been an avid member of Bow High School for the past three years and looks forward to finishing with a very productive year.</p>
 
-					<div class="row">
-						<div class="col-sm-2">
-							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
-						</div>
-						<div class="col-sm-10">
-							<p><strong>VP:</strong> Sohani Demian will become President next year. She is spending this year in training and will do very wonderfu things as pres next year!! I need some sort of bio for her...</p>
-						</div>
-					</div>
+					<p><strong>VP:</strong> Sohani Demian will become President next year. She is spending this year in training and will do very wonderfu things as pres next year!! I need some sort of bio for her...</p>
 
-					<div class="row">
-						<div class="col-sm-2">
-							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
-						</div>
-						<div class="col-sm-10">
-							<p><strong>Secretary:</strong> Placeholder text</p>
-						</div>
-					</div>
+					<p><strong>Secretary:</strong> Placeholder text</p>
 
-					<div class="row">
-						<div class="col-sm-2">
-							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
-						</div>
-						<div class="col-sm-10">
-							<p><strong>Treasurer:</strong> Owen Molind ... placeholder text</p>
-						</div>
-					</div>
+					<p><strong>Treasurer:</strong> Owen Molind ... placeholder text</p>
 
-					<div class="row">
-						<div class="col-sm-2">
-							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
-						</div>
-						<div class="col-sm-10">
-							<p><strong>Parliamentarian:</strong> Placeholder text</p>
-						</div>
-					</div>
+					<p><strong>Parliamentarian:</strong> Placeholder text</p>
 
-					<div class="row">
-						<div class="col-sm-2">
-							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
-						</div>
-						<div class="col-sm-10">
-							<p><strong>Webmaster:</strong> Dylan Wheeler manages and maintains the online platform for all NHS members to communicate and stay organized. He has been programming for six years, two of which have been for web development.</p>
-						</div>
-					</div>
+					<p><strong>Webmaster:</strong> Dylan Wheeler manages and maintains the online platform for all NHS members to communicate and stay organized. He has been programming for six years, two of which have been for web development.</p>
 
-					<div class="row">
-						<div class="col-sm-2">
-							<img class="img-circle img-responsive img-center" src="http://placehold.it/125x125" alt="">
-						</div>
-						<div class="col-sm-10">
-							<p><strong>Historian:</strong> Placeholder text</p>
-						</div>
-					</div>
+					<p><strong>Historian:</strong> Placeholder text</p>
+
 				</div>
 
 
 				<div class="col-sm-6">
+
 					<h2>Chapter Members</h2>
+
 					<p>The Bow High School Chapter of the National Honor Society is filled with brilliant young minds looking to make a difference in their school. The school's members come from the junior and senior classes and represent the best BHS has to offer. The following list of members is orgaized alphabetically by last name:</p>
+
 				</div>
 
 			</div>
@@ -253,13 +208,13 @@ try {
 					<h2>Noteworthy Members</h2>
 					<div class="row">
 						<div class="col-sm-4">
-							<p><?php echo $account_combined['studentname'] . ' has been proven a noteworthy member of the Society by amassing a total of <strong>' . $max_combined . '</strong> hours of tutoring and community service! This is the highest combined total of any of our members. Congratulations!';?></p>
+							<p><?php echo '<strong>' . $account_combined['studentname'] . '</strong> has been proven a noteworthy member of the Society by amassing a total of <strong>' . $max_combined . '</strong> hours of tutoring and community service! This is the highest combined total of any of our members. Congratulations!';?></p>
 						</div>
 						<div class="col-sm-4">
-							<p><?php echo $account_tutoring['studentname'] . ' has earned the title of Most Tutoring Completed by donating <strong>' . $max_tutoring . '</strong> hours toward benefiting the education of fellow peers! Well done!';?></p>
+							<p><?php echo '<strong>' . $account_community['studentname'] . '</strong> has given back to the community by volunteering through the Society earning <strong>' . $max_community . '</strong> hours! This is the most community service done by any of our members. Awesome job!';?></p>
 						</div>
 						<div class="col-sm-4">
-							<p><?php echo $account_community['studentname'] . ' has given back to the community by volunteering through the Society earning <strong>' . $max_community . '</strong> hours! This is the most community service done by any of our members. Awesome job!';?></p>
+							<p><?php echo '<strong>' . $account_tutoring['studentname'] . '</strong> has earned the title of Most Tutoring Completed by donating <strong>' . $max_tutoring . '</strong> hours toward benefiting the education of fellow peers! Well done!';?></p>
 						</div>
 					</div>
 				</div>
@@ -289,7 +244,7 @@ try {
 			<div class="row">
 				<div class="col-lg-12">
 					<h2>Contact</h2>
-					<p>If there are any problems with this website, you have a suggestion for content, or you wish to contact me about other computer-related things, I can be reached at <a href="mailto:dwheelerw@gmail.com">dwheelerw@gmail.com</a>.</p>
+					<p>If there are any problems with this website, you have a suggestion for content, or you wish to contact me about other computer-related things, I can be reached at <a href="mailto:dwheelerw@gmail.com">dwheelerw@gmail.com</a>. If you are intent to contact our advisors, their contact information is available <a href="#about">above</a>.</p>
 				</div>
 			</div>
 		</section>

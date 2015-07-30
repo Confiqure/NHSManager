@@ -1,6 +1,19 @@
 NHS Manager
 ===============
 
-NHS Manager is an online platform adapted from existing Boostrap themes. Its job is to be a databank that stores and manages our school's Chapter of the National Honors Society members. All members must have required service hours to either tutoring or community-based service. These hours must be recorded and managed for all members. Chapter Officers have unique privilages that allow them to manage different aspects of the society. Those users are granted special permission to use NHS Manager for more sensitive material.
+NHS Manager is an online platform adapted from existing Boostrap themes. Its job is to be a databank that stores and manages our school's Chapter of the National Honors Society members.  Such data points include required service hours (either tutoring or community-based service), meeting minutes, and upcoming events.  Chapter Officers have unique privilages that allow them to manage different aspects of the society. Those users are granted special permission to use NHS Manager for more sensitive material.
 
-Requires SQL database for information. Configured database has a table called "nhs_members" with columns: username, password, token, studentname, role, tutoring, community, approved, and waiting.
+Requires an SQL database for information storage.  The configured database has a three tables:
+"events" has columns: title, date, color, icon, and description
+"members" has columns: username, password, token, studentname, role, tutoring, community, approved, and waiting
+"minutes" has columns: date, link, and absent
+
+Special Permissions:
+President: can add events to timeline
+VP: can add events to timeline
+Secretary: can add events to timeline and can upload meeting minutes
+Treasurer: can add events to timeline
+Parliamentarian: can add events to timeline and can approve service hours (feature will be added)
+Historian: can add events to timeline
+
+Webmaster/Administrator: has access to all privileges

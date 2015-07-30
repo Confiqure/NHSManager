@@ -1,0 +1,36 @@
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="fa fa-clock-o fa-fw"></i> Upcoming Events
+					</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<?php
+							echo '<ul class="timeline">';
+							for ($i = 0; $i < sizeof($events); $i++) {
+								if ($events[$i] == null) continue;
+								$events[$i]['title'] = str_replace('/[c]/', ',', $events[$i]['title']);
+								$events[$i]['title'] = str_replace('/[s]/', ';', $events[$i]['title']);
+								$events[$i]['title'] = str_replace('/[q]/', '"', $events[$i]['title']);
+								$events[$i]['description'] = str_replace('/[c]/', ',', $events[$i]['description']);
+								$events[$i]['description'] = str_replace('/[s]/', ';', $events[$i]['description']);
+								$events[$i]['description'] = str_replace('/[q]/', '"', $events[$i]['description']);
+								echo '
+							<li' . ($i % 2 == 1 ? ' class="timeline-inverted"' : '') . '>
+								<div class="timeline-badge ' . $events[$i]['color'] . '"><i class="fa fa-' . $events[$i]['icon'] . '"></i></div>
+									<div class="timeline-panel">
+										<div class="timeline-heading">
+											<h4 class="timeline-title">' . $events[$i]['title'] . '</h4>
+											<p><small class="text-muted"><i class="fa fa-clock-o"></i> ' . $events[$i]['date'] . '</small></p>
+										</div>
+										<div class="timeline-body">
+											<p>' . $events[$i]['description'] . '</p>
+										</div>
+									</div>
+								</li>' . "\n";
+								}
+							echo '</ul>';
+						?>
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->

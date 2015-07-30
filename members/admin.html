@@ -1,22 +1,31 @@
 <?php
 session_start();
 $account = false;
+$events = array();
+$minutes = array();
 if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 	require_once('../dbconfig.php');
 	try {
 		$dbh = new PDO($driver, $user, $pass, $attr);
-		try {
-			$stmt = $dbh->prepare('SELECT * FROM nhs_members WHERE token = :token');
-			$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
-			$stmt->execute();
-			while ($row = $stmt->fetch()) {
-				$account = $row;
-				break;
-			}
-			unset($stmt);
-		} catch (Exception $f) {
-			echo "Exception: " . $f->getMessage() . "<br />";
+		$stmt = $dbh->prepare('SELECT * FROM members WHERE token = :token');
+		$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
+		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			$account = $row;
+			break;
 		}
+		$stmt = $dbh->prepare('SELECT * FROM events ORDER BY DATE ASC');
+		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			$events[sizeof($events)] = $row;
+		}
+		$stmt = $dbh->prepare('SELECT * FROM minutes');
+		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			$minutes[sizeof($minutes)] = $row;
+		}
+		unset($stmt);
+		unset($dbh);
 	} catch (Exception $e) {
 		$recipient = "dwheelerw@gmail.com";
 		$subject = "ERROR - SQL Connection";
@@ -61,10 +70,10 @@ if ($account === false) {
 			echo '<script type="text/javascript">alert("';
 			switch ($_SESSION['status']) {
 				case 'success':
-					echo 'Your service has successfully been sent for review!';
+					echo 'The form has been submitted successfully!';
 					break;
 				case 'invalid':
-					echo 'One or more of the inputs for your service application was received invalidly. Please try again.';
+					echo 'One or more of the inputs for your application was entered invalidly. Please try again.';
 					break;
 				case 'error':
 					echo 'An unexpected error has occurred while trying to process your request. Please try again.';
@@ -88,7 +97,7 @@ if ($account === false) {
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand">National Honors Society</a>
+			<a href="../" class="navbar-brand">National Honors Society</a>
 		</div>
 		<!-- /.navbar-header -->
 		 <ul class="nav navbar-top-links navbar-right">
@@ -100,7 +109,7 @@ if ($account === false) {
 					<?php
 						$community_percent = round(($account['community'] > 10 ? 10 : $account['community']) * 10);
 						$tutoring_percent = round(($account['tutoring'] > 5 ? 5 : $account['tutoring']) * 20);
-						$total_percent = round((($account['tutoring'] > 5 ? 5 : $account['tutoring']) + ($account['community'] > 10 ? 10 : $account['community']) + ($account['tutoring'] + $account['community'] - 15)) * 5);
+						$total_percent = round((($account['tutoring'] > 5 ? 5 : $account['tutoring']) + ($account['community'] > 10 ? 10 : $account['community']) + ($account['tutoring'] + $account['community'] < 15 ? 0 : $account['tutoring'] + $account['community'] - 15)) * 5);
 						if ($total_percent > 100) $total_percent = 100;
 					?>
 					<li>
@@ -220,172 +229,32 @@ if ($account === false) {
 
 		<div class="row">
 			<div class="col-lg-8">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<i class="fa fa-pencil fa-fw"></i> Record Hours
-					</div>
-					<!-- /.panel-heading -->
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-12">
-								<form role="form" action="logHours.php" method="POST">
-									<div class="row">
-										<div class="col-sm-4">
-											<div class="form-group">
-												<label>Service Date</label>
-												<input class="form-control" type="date" name="date" max="<?php echo date('Y-d-m'); ?>" value="<?php echo date('Y-m-d'); ?>">
-											</div>
-										</div>
-										<div class="col-sm-4">
-											<div class="form-group">
-												<label>Type of Service</label>
-												<select class="form-control" name="service">
-													<option selected>Community Service</option>
-													<option>Tutoring</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-sm-4">
-											<div class="form-group">
-												<label>Hours Worked</label>
-												<input class="form-control" type="number" name="hours" min="0.25" max="20" step="0.25">
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<label>Description</label>
-										<textarea class="form-control" name="description" rows="3" placeholder="Use this section to talk a little about what you did to earn this service. The more detailed you are, the more likely it will be approved!"></textarea>
-									</div>
-									<div class="form-group">
-										<label>Supervisor</label>
-										<input class="form-control" name="contact" placeholder="Provide contact information for your supervisor, just in case.">
-									</div>
-									<button type="submit" class="btn btn-default">Request Approval</button>
-								</form>
-							</div>
-							<!-- /.col-lg-12 (nested) -->
-						</div>
-						<!-- /.row -->
-					</div>
-					<!-- /.panel-body -->
-				</div>
-				<!-- /.panel -->
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<i class="fa fa-bar-chart-o fa-fw"></i> Hour Log History
-					</div>
-					<!-- /.panel-heading -->
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="table-responsive">
-									<table class="table table-bordered table-hover table-striped">
-										<thead>
-											<tr>
-												<th><center>Date</center></th>
-												<th><center>Service</center></th>
-												<th><center>Hours</center></th>
-												<th><center>Description</center></th>
-												<th><center>Approved?</center></th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php
-												if (strlen($account['waiting']) === 0 && strlen($account['processed']) === 0) {
-													echo '<tr><td colspan="5">No service documented.</td></tr>';
-												} else {
-													$types = array('waiting', 'processed');
-													for ($i = 0; $i < 2; $i++) {
-														$entries = explode(';', $account[$types[$i]]);
-														foreach ($entries as $entry) {
-															if (strlen($entry) === 0) continue;
-															$components = explode(',', $entry);
-															$desc = $components[3];
-															$desc = str_replace('/[c]/', ',', $desc);
-															$desc = str_replace('/[s]/', ';', $desc);
-															$desc = str_replace('/[q]/', '"', $desc);
-															echo '
-											<tr>
-												<td>' . $components[0] . '</td>
-												<td>' . ($components[1] === 'tutoring' ? 'Tutoring' : 'Community Service') . '</td>
-												<td><center>' . $components[2] . '</center></td>
-												<td>' . $desc . '</td>
-												<td><center><i class="' . ($i === 0 ? 'glyphicon glyphicon-hourglass' : 'fa fa-' . $components[4] . ' fa-fw') . '"></i></center></td>
-											</tr>' . "\n";
-														}
-													}
-												}
-											?>
-										</tbody>
-									</table>
-								</div>
-								<!-- /.table-responsive -->
-							</div>
-							<!-- /.col-lg-12 (nested) -->
-						</div>
-						<!-- /.row -->
-					</div>
-					<!-- /.panel-body -->
-				</div>
-				<!-- /.panel -->
+<?php include('panel_record.html'); ?>
 			</div>
 			<!-- /.col-lg-8 -->
 			<div class="col-lg-4">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<i class="fa fa-bell fa-fw"></i> Notifications Panel
+						<i class="fa fa-clipboard fa-fw"></i> Meeting Minutes
 					</div>
 					<!-- /.panel-heading -->
 					<div class="panel-body">
 						<div class="list-group">
-							<a href="#" class="list-group-item">
-								<i class="fa fa-comment fa-fw"></i> New Comment
-								<span class="pull-right text-muted small"><em>4 minutes ago</em>
-								</span>
-							</a>
-							<a href="#" class="list-group-item">
-								<i class="fa fa-twitter fa-fw"></i> 3 New Followers
-								<span class="pull-right text-muted small"><em>12 minutes ago</em>
-								</span>
-							</a>
-							<a href="#" class="list-group-item">
-								<i class="fa fa-envelope fa-fw"></i> Message Sent
-								<span class="pull-right text-muted small"><em>27 minutes ago</em>
-								</span>
-							</a>
-							<a href="#" class="list-group-item">
-								<i class="fa fa-tasks fa-fw"></i> New Task
-								<span class="pull-right text-muted small"><em>43 minutes ago</em>
-								</span>
-							</a>
-							<a href="#" class="list-group-item">
-								<i class="fa fa-upload fa-fw"></i> Server Rebooted
-								<span class="pull-right text-muted small"><em>11:32 AM</em>
-								</span>
-							</a>
-							<a href="#" class="list-group-item">
-								<i class="fa fa-bolt fa-fw"></i> Server Crashed!
-								<span class="pull-right text-muted small"><em>11:13 AM</em>
-								</span>
-							</a>
-							<a href="#" class="list-group-item">
-								<i class="fa fa-warning fa-fw"></i> Server Not Responding
-								<span class="pull-right text-muted small"><em>10:57 AM</em>
-								</span>
-							</a>
-							<a href="#" class="list-group-item">
-								<i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
-								<span class="pull-right text-muted small"><em>9:49 AM</em>
-								</span>
-							</a>
-							<a href="#" class="list-group-item">
-								<i class="fa fa-money fa-fw"></i> Payment Received
-								<span class="pull-right text-muted small"><em>Yesterday</em>
-								</span>
-							</a>
+							<?php
+							for ($i = sizeof($minutes) - 1; $i >= 0; $i--) {
+								if ($minutes[$i] == null) continue;
+								$minutes[$i]['date'] = str_replace('/[c]/', ',', $minutes[$i]['date']);
+								$minutes[$i]['absent'] = str_replace('/[c]/', ',', $minutes[$i]['absent']);
+								$minutes[$i]['absent'] = str_replace('/[s]/', ';', $minutes[$i]['absent']);
+								$minutes[$i]['absent'] = str_replace('/[q]/', '"', $minutes[$i]['absent']);
+								echo '
+							<a href="' . $minutes[$i]['link'] . '" class="list-group-item" target="_blank">
+								' . $minutes[$i]['date'] . ' <span class="pull-right text-muted small" style="color:' . (strpos($minutes[$i]['absent'], $account['studentname']) === false ? 'green"><em>Present' : 'red"><em>Absent') . '</em></span>
+							</a>' . "\n";
+								}
+							?>
 						</div>
 						<!-- /.list-group -->
-						<a href="#" class="btn btn-default btn-block">View All Alerts</a>
 					</div>
 					<!-- /.panel-body -->
 				</div>
@@ -394,120 +263,14 @@ if ($account === false) {
 			<!-- /.col-lg-4 -->
 		</div>
 		<!-- /.row -->
+		<?php if ($account['role'] !== 'Member') echo'
+		<div class="row">
+			<div class="col-lg-12">'; include('panel_admin.html'); echo '</div>
+		</div>
+		<!-- /.row -->'; ?>
 		<div class="row">
 			<div class="col-lg-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<i class="fa fa-clock-o fa-fw"></i> Upcoming Events
-					</div>
-					<!-- /.panel-heading -->
-					<div class="panel-body">
-						<ul class="timeline">
-							<li>
-								<div class="timeline-badge"><i class="fa fa-check"></i>
-								</div>
-								<div class="timeline-panel">
-									<div class="timeline-heading">
-										<h4 class="timeline-title">Lorem ipsum dolor</h4>
-										<p><small class="text-muted"><i class="fa fa-clock-o"></i> 11 hours ago via Twitter</small>
-										</p>
-									</div>
-									<div class="timeline-body">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero laboriosam dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est cum veniam excepturi. Maiores praesentium, porro voluptas suscipit facere rem dicta, debitis.</p>
-									</div>
-								</div>
-							</li>
-							<li class="timeline-inverted">
-								<div class="timeline-badge warning"><i class="fa fa-credit-card"></i>
-								</div>
-								<div class="timeline-panel">
-									<div class="timeline-heading">
-										<h4 class="timeline-title">Lorem ipsum dolor</h4>
-									</div>
-									<div class="timeline-body">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem quibusdam, tenetur commodi provident cumque magni voluptatem libero, quis rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia repellendus.</p>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="timeline-badge danger"><i class="fa fa-bomb"></i>
-								</div>
-								<div class="timeline-panel">
-									<div class="timeline-heading">
-										<h4 class="timeline-title">Lorem ipsum dolor</h4>
-									</div>
-									<div class="timeline-body">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.</p>
-									</div>
-								</div>
-							</li>
-							<li class="timeline-inverted">
-								<div class="timeline-panel">
-									<div class="timeline-heading">
-										<h4 class="timeline-title">Lorem ipsum dolor</h4>
-									</div>
-									<div class="timeline-body">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="timeline-badge info"><i class="fa fa-save"></i>
-								</div>
-								<div class="timeline-panel">
-									<div class="timeline-heading">
-										<h4 class="timeline-title">Lorem ipsum dolor</h4>
-									</div>
-									<div class="timeline-body">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis minus modi quam ipsum alias at est molestiae excepturi delectus nesciunt, quibusdam debitis amet, beatae consequuntur impedit nulla qui! Laborum, atque.</p>
-										<hr>
-										<div class="btn-group">
-											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-												<i class="fa fa-gear"></i>  <span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu" role="menu">
-												<li><a href="#">Action</a>
-												</li>
-												<li><a href="#">Another action</a>
-												</li>
-												<li><a href="#">Something else here</a>
-												</li>
-												<li class="divider"></li>
-												<li><a href="#">Separated link</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="timeline-panel">
-									<div class="timeline-heading">
-										<h4 class="timeline-title">Lorem ipsum dolor</h4>
-									</div>
-									<div class="timeline-body">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi fuga odio quibusdam. Iure expedita, incidunt unde quis nam! Quod, quisquam. Officia quam qui adipisci quas consequuntur nostrum sequi. Consequuntur, commodi.</p>
-									</div>
-								</div>
-							</li>
-							<li class="timeline-inverted">
-								<div class="timeline-badge success"><i class="fa fa-graduation-cap"></i>
-								</div>
-								<div class="timeline-panel">
-									<div class="timeline-heading">
-										<h4 class="timeline-title">Lorem ipsum dolor</h4>
-									</div>
-									<div class="timeline-body">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati, quaerat tempore officia voluptas debitis consectetur culpa amet, accusamus dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque eaque.</p>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-					<!-- /.panel-body -->
-				</div>
-				<!-- /.panel -->
+<?php include('panel_events.html'); ?>
 			</div>
 		</div>
 	</div>

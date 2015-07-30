@@ -9,7 +9,7 @@ require_once('dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	try {
-		$stmt = $dbh->prepare('SELECT studentname,community,tutoring FROM nhs_members');
+		$stmt = $dbh->prepare('SELECT studentname,community,tutoring FROM members');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			if ($row['tutoring'] + $row['community'] > $max_combined) {
@@ -27,6 +27,7 @@ try {
 			break;
 		}
 		unset($stmt);
+		unset($dbh);
 	} catch (Exception $f) {
 		echo "Exception: " . $f->getMessage() . "<br />";
 	}
@@ -71,7 +72,7 @@ try {
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="members/#">Members Login</a>
+				<a class="navbar-brand" href="members/#">Members Portal</a>
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -167,32 +168,32 @@ try {
 			<hr />
 
 			<div class="row">
-				<div class="col-sm-6">
-
-					<h2>Chapter Officers</h2>
-
-					<p><strong>President:</strong> Hayden Udelson is the President for the 2015-2016 school year. As President, Hayden will be leading NHS in the group meetings. He has been an avid member of Bow High School for the past three years and looks forward to finishing with a very productive year.</p>
-
-					<p><strong>VP:</strong> Sohani Demian will become President next year. She is spending this year in training and will do very wonderfu things as pres next year!! I need some sort of bio for her...</p>
-
-					<p><strong>Secretary:</strong> Placeholder text</p>
-
-					<p><strong>Treasurer:</strong> Owen Molind ... placeholder text</p>
-
-					<p><strong>Parliamentarian:</strong> Placeholder text</p>
-
-					<p><strong>Webmaster:</strong> Dylan Wheeler manages and maintains the online platform for all NHS members to communicate and stay organized. He has been programming for six years, two of which have been for web development.</p>
-
-					<p><strong>Historian:</strong> Placeholder text</p>
-
-				</div>
-
 
 				<div class="col-sm-6">
 
 					<h2>Chapter Members</h2>
 
-					<p>The Bow High School Chapter of the National Honor Society is filled with brilliant young minds looking to make a difference in their school. The school's members come from the junior and senior classes and represent the best BHS has to offer. The following list of members is orgaized alphabetically by last name:</p>
+					<p>The Bow High School Chapter of the National Honor Society is filled with brilliant young minds looking to make a difference in their school. The school's members come from the junior and senior classes and represent the best BHS has to offer.</p>
+					<p>The senior members this year are: Madison Beauchain, Shannon Benson, Madeleine Cheney, Anthony Dal Pos, Casey Day, Jillian DeLand, John Graham, Margaret Jensen, Brooke Johnson, Hadley Johnson, Robert Joscelyn, Kaitlynn Leary, Samantha MacEachron, Justin McCully, Claire Murray, Ryan Murray, Michelle Neal, Alina Pinney, Aditya Shah, Samrawit Silva, Kaythi Tu, Evan Vulgamore, Katrina Wells, Shane Wunderli, and Laura Zbehlik.</p>
+					<p>The inductees this year are: Austin Beaudette, Kristen Benson, Duke Biehl, Sullivan Blair, Anthony Celenza, Lucas Cohen, Mason Elle-Gelernter, Sebastian Grasso, Riley Hicks, Abigail Horner, Paige Johnson, Nandita Kasireddy, Rebecca Katz, Olivia Krause, Conner Lorenz, Hallie Lothrop, Joseph Lulka, Emily Montebianchi, Michael Mullen, Claire Mulvaney, Samuel Neff, Bryce Northrop, Brandon Parker, Elizabeth Pizzi, Isabella Urbina, Jack Vachon, Sadie Warburton, Elin Warwick, Brendan Winch, and Elysia Woody.</p>
+
+				</div>
+
+				<div class="col-sm-6">
+
+					<p><strong>President:</strong> Hayden Udelson is the President for the 2015-2016 school year. As President, Hayden will be leading NHS in the group meetings. He has been an avid member of Bow High School for the past three years and looks forward to finishing with a very productive year.</p>
+
+					<p><strong>VP:</strong> Sohani Demian will become President next year. She is spending this year in training and will do very wonderfu things as pres next year!! I need some sort of bio for her...</p>
+
+					<p><strong>Secretaries:</strong> Julia Currier and Caitlin Keenan are both secretaries this year yay wooo [placeholder text]</p>
+
+					<p><strong>Treasurer:</strong> Owen Molind ... placeholder text</p>
+
+					<p><strong>Parliamentarian:</strong> Sarah Zecha ... more placeholder text until I get bios</p>
+
+					<p><strong>Webmaster:</strong> Dylan Wheeler manages all aspects of our Chapter's online platform. He has been programming for six years, two of which have been for web development. As a senior, he plays football and runs track. He intends on going to college for computer science and business.</p>
+
+					<p><strong>Historian:</strong> Amanda Murray give me a bio please and you won't see this placeholder text</p>
 
 				</div>
 
@@ -232,7 +233,7 @@ try {
 				</div>
 				<div class="col-sm-6">
 					<h2>Tutoring</h2>
-					<p>If you or your child needs tutoring, take a moment to fill out <a href="https://docs.google.com/a/bownet.org/forms/d/1sSI9VPPaCWIM0G4fuuHLF9PKEgDfOqSh6r9ENGoOXJ0/" title="_blank">this Google Form</a>. Your requests will be met very soon as the society finds a member best suited for your help!</p>
+					<p>If you or your child needs tutoring, take a moment to fill out <a href="https://docs.google.com/a/bownet.org/forms/d/1sSI9VPPaCWIM0G4fuuHLF9PKEgDfOqSh6r9ENGoOXJ0/" target="_blank">this Google Form</a>. Your requests will be met very soon as the society finds a member best suited for your help!</p>
 				</div>
 			</div>
 		</section>
@@ -245,6 +246,7 @@ try {
 				<div class="col-lg-12">
 					<h2>Contact</h2>
 					<p>If there are any problems with this website, you have a suggestion for content, or you wish to contact me about other computer-related things, I can be reached at <a href="mailto:dwheelerw@gmail.com">dwheelerw@gmail.com</a>. If you are intent to contact our advisors, their contact information is available <a href="#about">above</a>.</p>
+					<p>Bow High School is resides at 55 Falcon Way in Bow, New Hampshire.  The office can be reached at (603) 228-2210 or faxed at (603) 228-2212.</p>
 				</div>
 			</div>
 		</section>

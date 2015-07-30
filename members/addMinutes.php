@@ -1,11 +1,5 @@
 <?php
 session_start();
-$date = explode('-', $_POST['date']);
-if (!checkdate($date[1], $date[2], $date[0]) || !is_numeric($_POST['hours'])) {
-	$_SESSION['status'] = 'invalid';
-	header('Location: http://confiqure.uphero.com/nhs/members/');
-	return;
-}
 $account = false;
 require_once('../dbconfig.php');
 try {
@@ -17,23 +11,20 @@ try {
 		$account = $row;
 		break;
 	}
-	if ($account === false) {
+	if ($account === false || ($account['role'] !== 'Administrator' && $account['role'] !== 'Secretary')) {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
 		header('Location: http://confiqure.uphero.com/nhs/members/');
 		return;
 	}
-	$desc = $_POST['description'];
-	$desc = str_replace(',', '/[c]/', $desc);
-	$desc = str_replace(';', '/[s]/', $desc);
-	$desc = str_replace('"', '/[q]/', $desc);
-	$contact = $_POST['contact'];
-	$contact = str_replace(',', '/[c]/', $contact);
-	$contact = str_replace(';', '/[s]/', $contact);
-	$contact = str_replace('"', '/[q]/', $contact);
-	$new = $date[1] . '/' . $date[2] . '/' . $date[0] . ',' . ($_POST['service'] === 'Tutoring' ? 'tutoring' : 'community') . ',' . $_POST['hours'] . ',' . $desc . ',' . $contact . ';';
-	$stmt = $dbh->prepare('UPDATE members SET waiting = "' .  $new . $account['waiting'] . '" WHERE username = "' . $account['username'] . '"');
+	$date = $_POST['date'];
+	$date = str_replace(',', '/[c]/', $date);
+	$absent = $_POST['absent'];
+	$absent = str_replace(',', '/[c]/', $absent);
+	$absent = str_replace(';', '/[s]/', $absent);
+	$absent = str_replace('"', '/[q]/', $absent);
+	$stmt = $dbh->prepare("INSERT INTO minutes VALUES(\"$date\",\"" . $_POST['link'] . "\",\"$absent\")");
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);

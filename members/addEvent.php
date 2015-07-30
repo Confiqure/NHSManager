@@ -1,7 +1,7 @@
 <?php
 session_start();
 $date = explode('-', $_POST['date']);
-if (!checkdate($date[1], $date[2], $date[0]) || !is_numeric($_POST['hours'])) {
+if (!checkdate($date[1], $date[2], $date[0])) {
 	$_SESSION['status'] = 'invalid';
 	header('Location: http://confiqure.uphero.com/nhs/members/');
 	return;
@@ -17,23 +17,38 @@ try {
 		$account = $row;
 		break;
 	}
-	if ($account === false) {
+	if ($account === false || $account['role'] === 'Member') {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
 		header('Location: http://confiqure.uphero.com/nhs/members/');
 		return;
 	}
+	$title = $_POST['title'];
+	$title = str_replace(',', '/[c]/', $title);
+	$title = str_replace(';', '/[s]/', $title);
+	$title = str_replace('"', '/[q]/', $title);
 	$desc = $_POST['description'];
 	$desc = str_replace(',', '/[c]/', $desc);
 	$desc = str_replace(';', '/[s]/', $desc);
 	$desc = str_replace('"', '/[q]/', $desc);
-	$contact = $_POST['contact'];
-	$contact = str_replace(',', '/[c]/', $contact);
-	$contact = str_replace(';', '/[s]/', $contact);
-	$contact = str_replace('"', '/[q]/', $contact);
-	$new = $date[1] . '/' . $date[2] . '/' . $date[0] . ',' . ($_POST['service'] === 'Tutoring' ? 'tutoring' : 'community') . ',' . $_POST['hours'] . ',' . $desc . ',' . $contact . ';';
-	$stmt = $dbh->prepare('UPDATE members SET waiting = "' .  $new . $account['waiting'] . '" WHERE username = "' . $account['username'] . '"');
+	$color = '';
+	switch ($_POST['color']) {
+		case 'Yellow':
+			$color = 'warning';
+			break;
+		case 'Red':
+			$color = 'danger';
+			break;
+		case 'Blue':
+			$color = 'info';
+			break;
+		case 'Green':
+			$color = 'success';
+			break;
+	}
+	$icon = strtolower(str_replace(' ', '-', $_POST['icon']));
+	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$title\",\"" . $date[1] . '/' . $date[2] . '/' . $date[0] . "\",\"$color\",\"$icon\",\"$desc\")");
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);

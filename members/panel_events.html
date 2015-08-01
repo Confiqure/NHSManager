@@ -16,7 +16,7 @@
 								$events[$i]['description'] = str_replace('/[q]/', '"', $events[$i]['description']);
 								echo '
 							<li' . ($i % 2 == 1 ? ' class="timeline-inverted"' : '') . '>
-								<div class="timeline-badge ' . $events[$i]['color'] . '"><i class="fa fa-' . $events[$i]['icon'] . '"></i></div>
+								<div class="timeline-badge ' . $events[$i]['color'] . '"><i class="' . $events[$i]['icon'] . '"></i></div>
 									<div class="timeline-panel">
 										<div class="timeline-heading">
 											<h4 class="timeline-title">' . $events[$i]['title'] . '</h4>

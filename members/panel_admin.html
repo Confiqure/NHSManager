@@ -36,7 +36,7 @@
 										<div class="col-sm-3">
 											<div class="form-group">
 												<label>Badge Icon</label>
-												<input class="form-control" name="icon" maxlength="32" placeholder="Type in an icon">
+												<input class="form-control" name="icon" maxlength="32" placeholder="Type in a common object">
 											</div>
 										</div>
 									</div>
@@ -58,19 +58,19 @@
 										<div class="col-sm-3">
 											<div class="form-group">
 												<label>Meeting Date</label>
-												<input class="form-control" name="date" maxlength="32" placeholder="Month Date, Year">
+												<input class="form-control" name="date" maxlength="32" placeholder="Month Date, Year" value="<?php echo date('F d, Y'); ?>">
 											</div>
 										</div>
 										<div class="col-sm-9">
 											<div class="form-group">
 												<label>URL to Minutes</label>
-												<input class="form-control" name="link" maxlength="64" placeholder="Upload document to Google Drive and link it here">
+												<input class="form-control" name="link" maxlength="64" placeholder="Upload the minutes to Google Drive, give it public access via URL, and link it here">
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<label>Absentees</label>
-										<textarea class="form-control" name="absent" rows="3" placeholder="List all members who were absent during the meeting."></textarea>
+										<textarea class="form-control" name="absent" rows="3" placeholder="List all members who were absent during the meeting (first and last names)."></textarea>
 									</div>
 									<button type="submit" class="btn btn-default">Upload</button>
 								</form>

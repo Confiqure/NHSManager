@@ -47,7 +47,7 @@ try {
 			$color = 'success';
 			break;
 	}
-	$icon = strtolower(str_replace(' ', '-', $_POST['icon']));
+	$icon = 'fa fa-' . strtolower(str_replace(' ', '-', $_POST['icon']));
 	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$title\",\"" . $date[1] . '/' . $date[2] . '/' . $date[0] . "\",\"$color\",\"$icon\",\"$desc\")");
 	$stmt->execute();
 	unset($stmt);

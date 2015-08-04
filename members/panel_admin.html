@@ -35,7 +35,7 @@
 										</div>
 										<div class="col-sm-3">
 											<div class="form-group">
-												<label>Badge Icon <sup><a href="icons.html" target="_blank">[?]</a></sup></label>
+												<label>Badge Icon Code <sup><a href="icons.html" target="_blank">[?]</a></sup></label>
 												<input class="form-control" name="icon" maxlength="32" placeholder="Click the '?' for help">
 											</div>
 										</div>
@@ -50,6 +50,66 @@
 							<!-- /.col-lg-12 (nested) -->
 						</div>
 						<!-- /.row -->
+						<?php
+						if ($account['role'] === "Administrator" || $account['role'] === "Parliamentarian") { echo '
+						<div class="row">
+							<div class="col-lg-12">
+								<h2>Approve Hours</h2>
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover table-striped">
+										<thead>
+											<tr>
+												<th style="vertical-align:middle"><center>Name</center></th>
+												<th style="vertical-align:middle"><center>Date</center></th>
+												<th style="vertical-align:middle"><center>Service</center></th>
+												<th style="vertical-align:middle"><center>Hours</center></th>
+												<th style="vertical-align:middle"><center>Description</center></th>
+												<th style="vertical-align:middle"><center>Contact Info.</center></th>
+												<th style="vertical-align:middle"><center>Approve?</center></th>
+											</tr>
+										</thead>
+										<tbody>';
+												if (sizeof($pending) === 0) {
+											echo '<tr><td colspan="7">No one needs service hours approved.</td></tr>';
+												} else {
+													for ($i = 0; $i < sizeof($pending); $i++) {
+														$entries = explode(';', $pending[$i][2]);
+														$count = 0;
+														foreach ($entries as $entry) {
+															if (strlen($entry) === 0) continue;
+															$components = explode(',', $entry);
+															$desc = $components[3];
+															$desc = str_replace('/[c]/', ',', $desc);
+															$desc = str_replace('/[s]/', ';', $desc);
+															$desc = str_replace('/[q]/', '"', $desc);
+															$contact = $components[4];
+															$contact = str_replace('/[c]/', ',', $contact);
+															$contact = str_replace('/[s]/', ';', $contact);
+															$contact = str_replace('/[q]/', '"', $contact);
+															echo '
+											<tr>
+												<td style="vertical-align:middle"><center>' . $pending[$i][1] . '</center></td>
+												<td style="vertical-align:middle"><center>' . $components[0] . '</center></td>
+												<td style="vertical-align:middle"><center>' . ($components[1] === 'tutoring' ? 'Tutoring' : 'Community Service') . '</center></td>
+												<td style="vertical-align:middle"><center>' . $components[2] . '</center></td>
+												<td>' . $desc . '</td>
+												<td style="vertical-align:middle"><center>' . $contact . '</center></td>
+												<td style="vertical-align:middle"><center><a href="process.php?username=' . $pending[$i][0] . '&count=' . $count . '&state=true"><i class="fa fa-check fa-fw"></i></a>&nbsp;&nbsp;&nbsp;<a href="process.php?username=' . $pending[$i][0] . '&count=' . $count . '&state=false"><i class="fa fa-times fa-fw"></i></a></center></td>
+											</tr>' . "\n";
+															$count++;
+														}
+													}
+												}
+										echo '</tbody>
+									</table>
+								</div>
+								<!-- /.table-responsive -->
+							</div>
+							<!-- /.col-lg-12 (nested) -->
+						</div>
+						<!-- /.row -->';
+						}
+						if ($account['role'] === "Administrator" || $account['role'] === "Secretary") { echo '
 						<div class="row">
 							<div class="col-lg-12">
 								<h2>Upload meeting minutes</h2>
@@ -58,7 +118,7 @@
 										<div class="col-sm-3">
 											<div class="form-group">
 												<label>Meeting Date</label>
-												<input class="form-control" name="date" maxlength="32" placeholder="Month Date, Year" value="<?php echo date('F d, Y'); ?>">
+												<input class="form-control" name="date" maxlength="32" placeholder="Month Date, Year" value="' . date('F d, Y') . '">
 											</div>
 										</div>
 										<div class="col-sm-9">
@@ -77,7 +137,9 @@
 							</div>
 							<!-- /.col-lg-12 (nested) -->
 						</div>
-						<!-- /.row -->
+						<!-- /.row -->';
+						}
+						?>
 					</div>
 					<!-- /.panel-body -->
 				</div>

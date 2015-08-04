@@ -1,8 +1,7 @@
 <?php
 session_start();
 $account = false;
-$events = array();
-$minutes = array();
+$events = $minutes = $pending = array();
 if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 	require_once('../dbconfig.php');
 	try {
@@ -14,7 +13,7 @@ if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 			$account = $row;
 			break;
 		}
-		$stmt = $dbh->prepare('SELECT * FROM events ORDER BY DATE ASC');
+		$stmt = $dbh->prepare('SELECT * FROM events ORDER BY date ASC');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$events[sizeof($events)] = $row;
@@ -23,6 +22,13 @@ if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$minutes[sizeof($minutes)] = $row;
+		}
+		if ($account['role'] === "Administrator" || $account['role'] === "Parliamentarian") {
+			$stmt = $dbh->prepare('SELECT username,studentname,pending FROM members WHERE pending != ""');
+			$stmt->execute();
+			while ($row = $stmt->fetch()) {
+				$pending[sizeof($pending)] = $row;
+			}
 		}
 		unset($stmt);
 		unset($dbh);
@@ -37,7 +43,7 @@ if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 if ($account === false) {
 	session_unset();
 	session_destroy();
-	header('Location: http://confiqure.uphero.com/nhs/members/');
+	header('Location: http://nhs.comxa.com/members/');
 }
 ?>
 <!DOCTYPE html>
@@ -78,11 +84,14 @@ if ($account === false) {
 				case 'success':
 					echo 'The form has been submitted successfully!';
 					break;
+				case 'processed':
+					echo 'The service has been processed!';
+					break;
 				case 'invalid':
 					echo 'One or more of the inputs for your application was entered invalidly. Please try again.';
 					break;
 				case 'error':
-					echo 'An unexpected error has occurred while trying to process your request. Please try again.';
+					echo 'An unexpected error has occurred while trying to process your request. Please try again. NOTICE: you might not have the required permissions to perform that action.';
 					break;
 			}
 			echo '");</script>';
@@ -174,13 +183,15 @@ if ($account === false) {
 					<i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">
-					<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-					</li>
-					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-					</li>
+					<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
+					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
 					<li class="divider"></li>
-					<li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-					</li>
+					<?php
+					if ($account['role'] === 'Administrator' || $account['role'] === 'Parliamentarian') echo '
+					<li><a href="getHours.php"><i class="fa fa-print fa-fw"></i> Get Hours List</a></li>
+					<li class="divider"></li>';
+					?>
+					<li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 				</ul>
 				<!-- /.dropdown-user -->
 			</li>
@@ -269,11 +280,11 @@ if ($account === false) {
 			<!-- /.col-lg-4 -->
 		</div>
 		<!-- /.row -->
-		<?php if ($account['role'] !== 'Member') echo'
+		<?php if ($account['role'] !== 'Member') { echo'
 		<div class="row">
 			<div class="col-lg-12">'; include('panel_admin.html'); echo '</div>
 		</div>
-		<!-- /.row -->'; ?>
+		<!-- /.row -->'; } ?>
 		<div class="row">
 			<div class="col-lg-12">
 <?php include('panel_events.html'); ?>

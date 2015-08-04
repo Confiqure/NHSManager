@@ -3,7 +3,7 @@ session_start();
 $date = explode('-', $_POST['date']);
 if (!checkdate($date[1], $date[2], $date[0]) || !is_numeric($_POST['hours'])) {
 	$_SESSION['status'] = 'invalid';
-	header('Location: http://confiqure.uphero.com/nhs/members/');
+	header('Location: http://nhs.comxa.com/members/');
 	return;
 }
 $account = false;
@@ -21,7 +21,7 @@ try {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
-		header('Location: http://confiqure.uphero.com/nhs/members/');
+		header('Location: http://nhs.comxa.com/members/');
 		return;
 	}
 	$desc = $_POST['description'];
@@ -33,12 +33,12 @@ try {
 	$contact = str_replace(';', '/[s]/', $contact);
 	$contact = str_replace('"', '/[q]/', $contact);
 	$new = $date[1] . '/' . $date[2] . '/' . $date[0] . ',' . ($_POST['service'] === 'Tutoring' ? 'tutoring' : 'community') . ',' . $_POST['hours'] . ',' . $desc . ',' . $contact . ';';
-	$stmt = $dbh->prepare('UPDATE members SET waiting = "' .  $new . $account['waiting'] . '" WHERE username = "' . $account['username'] . '"');
+	$stmt = $dbh->prepare('UPDATE members SET pending = "' .  $new . $account['pending'] . '" WHERE username = "' . $account['username'] . '"');
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';
-	header('Location: http://confiqure.uphero.com/nhs/members/');
+	header('Location: http://nhs.comxa.com/members/');
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";

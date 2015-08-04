@@ -3,7 +3,7 @@ session_start();
 $date = explode('-', $_POST['date']);
 if (!checkdate($date[1], $date[2], $date[0])) {
 	$_SESSION['status'] = 'invalid';
-	header('Location: http://confiqure.uphero.com/nhs/members/');
+	header('Location: http://nhs.comxa.com/members/');
 	return;
 }
 $account = false;
@@ -21,7 +21,7 @@ try {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
-		header('Location: http://confiqure.uphero.com/nhs/members/');
+		header('Location: http://nhs.comxa.com/members/');
 		return;
 	}
 	$title = $_POST['title'];
@@ -47,14 +47,15 @@ try {
 			$color = 'success';
 			break;
 	}
-	$icon = strtolower(str_replace(' ', '-', $_POST['icon']));
-	if ($icon == '') $icon = 'fa fa-check';
+	$icon = strtolower($_POST['icon']);
+	if ($icon == '' || strpos($icon, '-') == false) $icon = 'fa fa-check';
+	else $icon = substr($icon, 0, strpos($icon, '-')) . ' ' . $icon;
 	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$title\",\"" . $date[1] . '/' . $date[2] . '/' . $date[0] . "\",\"$color\",\"$icon\",\"$desc\")");
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';
-	header('Location: http://confiqure.uphero.com/nhs/members/');
+	header('Location: http://nhs.comxa.com/members/');
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";

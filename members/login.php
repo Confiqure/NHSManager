@@ -23,9 +23,9 @@ try {
 		$stmt->bindParam(':username', $username, PDO::PARAM_INT);
 		$stmt->execute();
 		$_SESSION['token'] = $code;
-		header('Location: http://confiqure.uphero.com/nhs/members/');
+		header('Location: http://nhs.comxa.com/members/');
 	} else {
-		header("Location: http://confiqure.uphero.com/nhs/members/?username=$username");
+		header("Location: http://nhs.comxa.com/members/?username=$username");
 	}
 	unset($stmt);
 	unset($dbh);

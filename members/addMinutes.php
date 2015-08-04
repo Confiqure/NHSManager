@@ -15,7 +15,7 @@ try {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
-		header('Location: http://confiqure.uphero.com/nhs/members/');
+		header('Location: http://nhs.comxa.com/members/');
 		return;
 	}
 	$date = $_POST['date'];
@@ -29,7 +29,7 @@ try {
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';
-	header('Location: http://confiqure.uphero.com/nhs/members/');
+	header('Location: http://nhs.comxa.com/members/');
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";

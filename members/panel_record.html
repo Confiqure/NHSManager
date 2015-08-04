@@ -11,7 +11,7 @@
 										<div class="col-sm-3">
 											<div class="form-group">
 												<label>Service Date</label>
-												<input class="form-control" type="date" name="date" max="<?php echo date('Y-d-m'); ?>" value="<?php echo date('Y-m-d'); ?>">
+												<input class="form-control" type="date" name="date" max="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>">
 											</div>
 										</div>
 										<div class="col-sm-3">
@@ -26,7 +26,7 @@
 										<div class="col-sm-2">
 											<div class="form-group">
 												<label>Hours</label>
-												<input class="form-control" type="number" name="hours" min="0.25" max="20" step="0.25" value="1">
+												<input class="form-control" type="number" name="hours" min="1" max="20" step="1" value="1">
 											</div>
 										</div>
 										<div class="col-sm-4">
@@ -71,10 +71,10 @@
 										</thead>
 										<tbody>
 											<?php
-												if (strlen($account['waiting']) === 0 && strlen($account['processed']) === 0) {
+												if (strlen($account['pending']) === 0 && strlen($account['processed']) === 0) {
 													echo '<tr><td colspan="5">No service documented.</td></tr>';
 												} else {
-													$types = array('waiting', 'processed');
+													$types = array('pending', 'processed');
 													for ($i = 0; $i < 2; $i++) {
 														$entries = explode(';', $account[$types[$i]]);
 														foreach ($entries as $entry) {
@@ -86,11 +86,11 @@
 															$desc = str_replace('/[q]/', '"', $desc);
 															echo '
 											<tr>
-												<td>' . $components[0] . '</td>
-												<td>' . ($components[1] === 'tutoring' ? 'Tutoring' : 'Community Service') . '</td>
-												<td><center>' . $components[2] . '</center></td>
+												<td style="vertical-align:middle"><center>' . $components[0] . '</center></td>
+												<td style="vertical-align:middle"><center>' . ($components[1] === 'tutoring' ? 'Tutoring' : 'Community Service') . '</center></td>
+												<td style="vertical-align:middle"><center>' . $components[2] . '</center></td>
 												<td>' . $desc . '</td>
-												<td><center><i class="' . ($i === 0 ? 'glyphicon glyphicon-hourglass' : 'fa fa-' . $components[4] . ' fa-fw') . '"></i></center></td>
+												<td style="vertical-align:middle"><center><i class="' . ($i === 0 ? 'glyphicon glyphicon-hourglass' : 'fa fa-' . $components[4] . ' fa-fw') . '"></i></center></td>
 											</tr>' . "\n";
 														}
 													}

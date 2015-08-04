@@ -2,5 +2,5 @@
 session_start();
 session_unset();
 session_destroy();
-header('Location: http://confiqure.uphero.com/nhs/');
+header('Location: http://nhs.comxa.com/');
 ?>

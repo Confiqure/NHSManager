@@ -8,47 +8,38 @@ try {
 	$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
-		$auth = $row['role'] === 'Adminstrator' || $row['role'] === 'Parliamentarian';
+		$auth = $row['role'] === 'Administrator' || $row['role'] === 'Parliamentarian';
 		break;
 	}
 	if ($auth) {
-		$stmt = $dbh->prepare('SELECT tutoring,community,processed,waiting,notifications FROM members WHERE username = :username');
+		$stmt = $dbh->prepare('SELECT tutoring,community,processed,pending FROM members WHERE username = :username');
 		$stmt->bindParam(':username', $_GET['username'], PDO::PARAM_STR);
 		$stmt->execute();
-		$account = $new_waiting = false;
+		$account = false;
 		while ($row = $stmt->fetch()) {
 			$account = $row;
 			break;
 		}
-		if ($account['waiting'] !== false) {
-			$account['waiting'] = explode(';', $account['waiting']);
-			for ($i = 0; $i < sizeof($account['waiting']); $i++) {
-				if ($i == $_GET['count']) continue;
-				$new_waiting .= $account['waiting'][$i] . ';';
-			}
-			$account['waiting'] = explode(',', $account['waiting'][$_GET['count']]);
-			$account['processed'] =. $account['waiting'][0] . ',' . $account['waiting'][1] . ',' . $account['waiting'][2] . ',' . $account['waiting'][3] . ',' . ($_GET['state'] == true ? 'check' : 'times') . ';';
-			if ($_GET['state'] == true) {
-				if ($account['waiting'][1] === 'community') {
-					$account['community'] += $account['waiting'][2];
-					$account['notifications'] =. 'check;Community service approved' . time() . ';';
-				} else {
-					$account['tutoring'] += $account['waiting'][2];
-					$account['notifications'] =. 'check;Tutoring approved' . time() . ';';
-				}
-			}
-			$stmt = $dbh->prepare('UPDATE members SET tutoring = "' . $account['tutoring'] . '", community = "' . $account['community'] . '", processed = "' . $account['processed'] . '", waiting = "' . $new_waiting . '", notifications = "' . $account['notifications'] . '" WHERE username = :username');
-			$stmt->bindParam(':username', $_GET['username'], PDO::PARAM_INT);
-			$stmt->execute();
-			$_SESSION['status'] = 'processed';
+		$account['pending'] = explode(';', $account['pending']);
+		$new_pending = '';
+		for ($i = 0; $i < sizeof($account['pending']); $i++) {
+			if ($i == $_GET['count']) continue;
+			$new_pending .= $account['pending'][$i] . ';';
 		}
-		$_SESSION['status'] = 'error';
+		$account['pending'] = explode(',', $account['pending'][$_GET['count']]);
+		$account['processed'] = $account['pending'][0] . ',' . $account['pending'][1] . ',' . $account['pending'][2] . ',' . $account['pending'][3] . ',' . ($_GET['state'] === 'true' ? 'check' : 'times') . ';' . $account['processed'];
+		if ($_GET['state'] === 'true') $account[$account['pending'][1]] += $account['pending'][2];
+		$account['pending'] = strpos($new_pending, ',') == false ? '' : $new_pending;
+		$stmt = $dbh->prepare('UPDATE members SET tutoring = "' . $account['tutoring'] . '", community = "' . $account['community'] . '", processed = "' . $account['processed'] . '", pending = "' . $account['pending'] . '" WHERE username = :username');
+		$stmt->bindParam(':username', $_GET['username'], PDO::PARAM_INT);
+		$stmt->execute();
+		$_SESSION['status'] = 'processed';
 	} else {
 		$_SESSION['status'] = 'error';
 	}
 	unset($stmt);
 	unset($dbh);
-	header("Location: http://confiqure.uphero.com/nhs/members/");
+	header("Location: http://nhs.comxa.com/members/");
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";

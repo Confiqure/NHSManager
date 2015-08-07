@@ -19,9 +19,23 @@ try {
 	}
 	$stmt = $dbh->prepare("SELECT studentname,community,tutoring FROM members ORDER BY studentname ASC");
 	$stmt->execute();
-	echo '<table style="border: 1px solid black;" padding="1px"><tr><th>Student Name</th><th>Community Service</th><th>Tutoring</th></tr>';
-	while ($row = $stmt->fetch()) {
-		echo '<tr><td>' . $row['studentname'] . '</td><td align="right">' . $row['community'] . '</td><td align="right">' . $row['tutoring'] . '</td></tr>';
+	switch ($_GET['filter']) {
+		case '1':
+			echo '<table style="border: 1px solid black;" padding="1px"><tr><th>Student Name</th><th>Needed CS</th><th>Needed Tutoring</th><th>Needed Total</th></tr>';
+			while ($row = $stmt->fetch()) {
+				$needed_cs = $row['community'] <= 10 ? 10 - $row['community'] : 0;
+				$needed_tut = $row['tutoring'] <= 5 ? 5 - $row['tutoring'] : 0;
+				$needed_tot = 20 - $row['community'] - $row['tutoring'];
+				if ($needed_tot == 0) continue;
+				echo '<tr><td>' . $row['studentname'] . '</td><td align="right">' . $needed_cs . '</td><td align="right">' . $needed_tut . '</td><td align="right">' . $needed_tot . '</td></tr>';
+			}
+			break;
+		default:
+			echo '<table style="border: 1px solid black;" padding="1px"><tr><th>Student Name</th><th>Community Service</th><th>Tutoring</th></tr>';
+			while ($row = $stmt->fetch()) {
+				echo '<tr><td>' . $row['studentname'] . '</td><td align="right">' . $row['community'] . '</td><td align="right">' . $row['tutoring'] . '</td></tr>';
+			}
+			break;
 	}
 	echo '</table>';
 	unset($stmt);

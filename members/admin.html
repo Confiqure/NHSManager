@@ -57,7 +57,7 @@ if ($account === false) {
 	<meta name="description" content="Section for NHS members to review their hours and responsibilites">
 	<meta name="author" content="Dylan Wheeler">
 
-	<title>National Honors Society</title>
+	<title>National Honor Society</title>
 
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../images/logo144.png">
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../images/logo114.png">
@@ -112,7 +112,7 @@ if ($account === false) {
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a href="../" class="navbar-brand">National Honors Society</a>
+			<a href="../" class="navbar-brand">National Honor Society</a>
 		</div>
 		<!-- /.navbar-header -->
 		 <ul class="nav navbar-top-links navbar-right">
@@ -188,7 +188,8 @@ if ($account === false) {
 					<li class="divider"></li>
 					<?php
 					if ($account['role'] === 'Administrator' || $account['role'] === 'Parliamentarian') echo '
-					<li><a href="getHours.php"><i class="fa fa-print fa-fw"></i> Get Hours List</a></li>
+					<li><a href="getHours.php?filter=0"><i class="fa fa-print fa-fw"></i> Full Hours List</a></li>
+					<li><a href="getHours.php?filter=1"><i class="fa fa-print fa-fw"></i> Needed Hours List</a></li>
 					<li class="divider"></li>';
 					?>
 					<li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>

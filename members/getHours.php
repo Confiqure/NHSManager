@@ -19,13 +19,14 @@ try {
 	}
 	$stmt = $dbh->prepare("SELECT studentname,community,tutoring FROM members ORDER BY studentname ASC");
 	$stmt->execute();
+	echo '<p>You can use CTRL+A to select all of the data and paste it into an Excel document for further analysis and formatting.</p>';
 	switch ($_GET['filter']) {
 		case '1':
 			echo '<table style="border: 1px solid black;" padding="1px"><tr><th>Student Name</th><th>Needed CS</th><th>Needed Tutoring</th><th>Needed Total</th></tr>';
 			while ($row = $stmt->fetch()) {
 				$needed_cs = $row['community'] <= 10 ? 10 - $row['community'] : 0;
 				$needed_tut = $row['tutoring'] <= 5 ? 5 - $row['tutoring'] : 0;
-				$needed_tot = 20 - $row['community'] - $row['tutoring'];
+				$needed_tot = max(array(20 - $row['community'] - $row['tutoring'], $needed_cs, $needed_tut));
 				if ($needed_tot == 0) continue;
 				echo '<tr><td>' . $row['studentname'] . '</td><td align="right">' . $needed_cs . '</td><td align="right">' . $needed_tut . '</td><td align="right">' . $needed_tot . '</td></tr>';
 			}

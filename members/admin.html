@@ -93,6 +93,9 @@ if ($account === false) {
 				case 'error':
 					echo 'An unexpected error has occurred while trying to process your request. Please try again. NOTICE: you might not have the required permissions to perform that action.';
 					break;
+				case 'pass_changed':
+					echo 'You have successfully changed your password! Use the new one to sign in from now forward.';
+					break;
 			}
 			echo '");</script>';
 			unset($_SESSION['status']);
@@ -184,7 +187,7 @@ if ($account === false) {
 				</a>
 				<ul class="dropdown-menu dropdown-user">
 					<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
-					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
+					<li><a href="changepass.html"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
 					<li class="divider"></li>
 					<?php
 					if ($account['role'] === 'Administrator' || $account['role'] === 'Parliamentarian') echo '
@@ -213,6 +216,16 @@ if ($account === false) {
 
 		<div class="row">
 			<div class="col-lg-6 col-md-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						Announcements
+					</div>
+					<div class="panel-footer">
+						Make sure you sign up for tours if you're available! Sign up forms can be found in your school email.
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3">
 				<div class="panel panel-yellow">
 					<div class="panel-heading">
 						<div class="row">
@@ -227,7 +240,7 @@ if ($account === false) {
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-6 col-md-6">
+			<div class="col-lg-3 col-md-3">
 				<div class="panel panel-red">
 					<div class="panel-heading">
 						<div class="row">

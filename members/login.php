@@ -20,7 +20,7 @@ try {
 		$length = 10;
 		while ($length--) $token .= $charset[mt_rand(0, $count)];
 		$stmt = $dbh->prepare('UPDATE members SET token = "' .  $token . '" WHERE username = :username');
-		$stmt->bindParam(':username', $username, PDO::PARAM_INT);
+		$stmt->bindParam(':username', $username, PDO::PARAM_STR);
 		$stmt->execute();
 		$_SESSION['token'] = $code;
 		header('Location: http://nhs.comxa.com/members/');

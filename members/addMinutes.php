@@ -18,13 +18,10 @@ try {
 		header('Location: http://nhs.comxa.com/members/');
 		return;
 	}
-	$date = $_POST['date'];
-	$date = str_replace(',', '/[c]/', $date);
-	$absent = $_POST['absent'];
-	$absent = str_replace(',', '/[c]/', $absent);
-	$absent = str_replace(';', '/[s]/', $absent);
-	$absent = str_replace('"', '/[q]/', $absent);
-	$stmt = $dbh->prepare("INSERT INTO minutes VALUES(\"$date\",\"" . $_POST['link'] . "\",\"$absent\")");
+	$stmt = $dbh->prepare('INSERT INTO minutes VALUES(:date,:link,:absent)');
+	$stmt->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
+	$stmt->bindParam(':link', $_POST['link'], PDO::PARAM_STR);
+	$stmt->bindParam(':absent', $_POST['absent'], PDO::PARAM_STR);
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);

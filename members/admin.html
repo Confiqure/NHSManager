@@ -221,7 +221,7 @@ if ($account === false) {
 						Announcements
 					</div>
 					<div class="panel-footer">
-						Make sure you sign up for tours if you're available! Sign up forms can be found in your school email.
+						Welcome to the new school year! Make sure to attend NHS meetings every Thursday during break, especially during these next few weeks.
 					</div>
 				</div>
 			</div>
@@ -233,7 +233,7 @@ if ($account === false) {
 								<i class="fa fa-heart fa-5x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
-								<div class="huge"><?php echo $account['community']; ?></div>
+								<div class="huge"><?php if ($account['role'] != "Administrator") echo $account['community']; else echo "NA"; ?></div>
 								<div>Community Service Hours</div>
 							</div>
 						</div>
@@ -248,7 +248,7 @@ if ($account === false) {
 								<i class="fa fa-university fa-5x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
-								<div class="huge"><?php echo $account['tutoring']; ?></div>
+								<div class="huge"><?php if ($account['role'] != "Administrator") echo $account['tutoring']; else echo "NA"; ?></div>
 								<div>Tutoring Hours</div>
 							</div>
 						</div>
@@ -260,7 +260,7 @@ if ($account === false) {
 
 		<div class="row">
 			<div class="col-lg-9">
-<?php include('panel_record.html'); ?>
+<?php if ($total_percent != 100) include('panel_record.html'); else include('panel_events.html');?>
 			</div>
 			<!-- /.col-lg-8 -->
 			<div class="col-lg-3">
@@ -274,13 +274,19 @@ if ($account === false) {
 							<?php
 							for ($i = sizeof($minutes) - 1; $i >= 0; $i--) {
 								if ($minutes[$i] == null) continue;
-								$minutes[$i]['date'] = str_replace('/[c]/', ',', $minutes[$i]['date']);
-								$minutes[$i]['absent'] = str_replace('/[c]/', ',', $minutes[$i]['absent']);
-								$minutes[$i]['absent'] = str_replace('/[s]/', ';', $minutes[$i]['absent']);
-								$minutes[$i]['absent'] = str_replace('/[q]/', '"', $minutes[$i]['absent']);
+								if (strlen($minutes[$i]['absent']) > 0) {
+									$minutes[$i]['absent'] = explode(',', $minutes[$i]['absent']);
+									$is_absent = false;
+									foreach ($minutes[$i]['absent'] as $name) {
+										if (strpos($account['studentname'], trim($name)) === 0) {
+											$is_absent = true;
+											break;
+										}
+									}
+								}
 								echo '
 							<a href="' . $minutes[$i]['link'] . '" class="list-group-item" target="_blank">
-								' . $minutes[$i]['date'] . ' <span class="pull-right text-muted small" style="color:' . (strpos($minutes[$i]['absent'], $account['studentname']) === false ? 'green"><em>Present' : 'red"><em>Absent') . '</em></span>
+								' . $minutes[$i]['date'] . ' <span class="pull-right text-muted small" style="color:' . ($is_absent ? 'red"><em>Absent' : 'green"><em>Present') . '</em></span>
 							</a>' . "\n";
 								}
 							?>
@@ -301,7 +307,7 @@ if ($account === false) {
 		<!-- /.row -->'; } ?>
 		<div class="row">
 			<div class="col-lg-12">
-<?php include('panel_events.html'); ?>
+<?php if ($total_percent != 100) include('panel_events.html'); else include('panel_record.html'); ?>
 			</div>
 		</div>
 	</div>

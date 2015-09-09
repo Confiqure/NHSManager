@@ -5,7 +5,7 @@ NHS Manager is an online platform adapted from existing Boostrap themes. Its job
 
 Requires an SQL database for information storage.  The configured database has a three tables:
 - "events" has columns: title, date, color, icon, and description
-- "members" has columns: username, password, token, studentname, role, tutoring, community, approved, and pending
+- "members" has columns: username, password, token, studentname, role, tutoring, community, approved, pending, and logins
 - "minutes" has columns: date, link, and absent
 
 Special Permissions:

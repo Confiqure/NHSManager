@@ -9,7 +9,7 @@ require_once('dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	try {
-		$stmt = $dbh->prepare('SELECT studentname,community,tutoring FROM members');
+		$stmt = $dbh->prepare('SELECT studentname,community,tutoring FROM members WHERE role != "Administrator"');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			if ($row['tutoring'] + $row['community'] > $max_combined) {
@@ -187,19 +187,19 @@ try {
 
 				<div class="col-sm-6">
 
-					<p><strong>President:</strong> Hayden Udelson has been an avid member of Bow High School for the past three years and looks forward to finishing with a very productive year. He runs cross country, skis Nordic, and plays tennis</p>
+					<p><strong>President:</strong> Hayden Udelson has been an avid member of Bow High School for the past three years and looks forward to finishing with a very productive year. He runs cross country, skis Nordic, and plays tennis.</p>
 
-					<p><strong>VP:</strong> Sohani Demian will become President next year. She is spending this year in training and will do very wonderfu things as pres next year!! I need some sort of bio for her...</p>
+					<p><strong>VP:</strong> Sohani Demian is a junior this year and will become President of NHS next year. She is a three sport varsity athlete (cross country, Nordic, and track). She is very excited to be on the executive board and to work with everyone this year!</p>
 
-					<p><strong>Secretaries:</strong> Julia Currier and Caitlin Keenan are both secretaries this year yay wooo [placeholder text]</p>
+					<p><strong>Secretaries:</strong> Julia Currier is a three sport varsity athlete playing soccer, unified basketball, and lacrosse. She loves to make sure everyone is happy and is beyond excited to help everyone in NHS and the school this year.<br />Caitlin Keenan is also a secretary this year yay wooo [placeholder text]</p>
 
-					<p><strong>Treasurer:</strong> Owen Molind ... placeholder text</p>
+					<p><strong>Treasurer:</strong> Owen Molind is a two sport athlete at Bow High school (soccer and Nordic) and a two-year captain. He also plays soccer in the spring with his club team FC Greater Londonderry.  He is a four-year member of the Student Senate and will serve as its Treasurer this year too.</p>
 
 					<p><strong>Parliamentarian:</strong> Sarah Zecha is a senior at Bow High School. She is a three sport varsity athlete (cross country, Nordic, and tennis) and loves all three. She is excited to be on the executive board of NHS this year.</p>
 
-					<p><strong>Webmaster:</strong> Dylan Wheeler has been programming for six years, two of which have been for web development. As a senior, he plays football and runs track. He intends on going to college for computer science and business.</p>
+					<p><strong>Webmaster:</strong> Dylan Wheeler has been programming for six years, two of which have been for web development. As a senior, he plays football and runs track. He intends to go to college to pursue computer science and business.</p>
 
-					<p><strong>Historian:</strong> Amanda Murray plays soccer, basketball, and lacrosse and can always be bribed with cookie dough. She can't wait for another great year on the National Honor Society with all of you!</p>
+					<p><strong>Historian:</strong> Amanda Murray plays soccer, basketball, and lacrosse and can always be bribed with cookie dough. She can't wait for another great year on the National Honor Society!</p>
 
 				</div>
 
@@ -257,7 +257,7 @@ try {
 			<div class="row">
 				<div class="col-lg-12">
 					<h2>Contact</h2>
-					<p>If there are any problems with this website, you have a suggestion for content, or you wish to contact me about other computer-related things, I can be reached at <a href="mailto:dwheelerw@gmail.com">dwheelerw@gmail.com</a>. If you are intent to contact our advisors, their contact information is available <a href="#about">above</a>.</p>
+					<p>If there are any problems with this website, you have a suggestion for content, or you wish to contact me about other computer-related things, I can be reached at <a href="mailto:dwheelerw@gmail.com">dwheelerw@gmail.com</a>. If you are intending to contact our advisors, their contact information is available <a href="#about">above</a>.</p>
 					<p>Bow High School resides at 55 Falcon Way in Bow, New Hampshire. The office can be reached at (603) 228-2210 or faxed at (603) 228-2212.</p>
 				</div>
 			</div>

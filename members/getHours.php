@@ -17,7 +17,7 @@ try {
 		}
 		break;
 	}
-	$stmt = $dbh->prepare("SELECT studentname,community,tutoring FROM members ORDER BY studentname ASC");
+	$stmt = $dbh->prepare('SELECT studentname,community,tutoring FROM members WHERE role != "Administrator" ORDER BY studentname ASC');
 	$stmt->execute();
 	echo '<p>You can use CTRL+A to select all of the data and paste it into an Excel document for further analysis and formatting.</p>';
 	switch ($_GET['filter']) {

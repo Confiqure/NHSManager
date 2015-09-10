@@ -1,6 +1,6 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<i class="fa fa-clock-o fa-fw"></i> Upcoming Events<?php if ($account['role'] !== "Member") echo '&nbsp;&nbsp;&nbsp;(if any info below needs to be changed, <a href="mailto:dwheelerw@gmail.com">email me</a>)'; ?>
+						<i class="fa fa-clock-o fa-fw"></i> Upcoming Events<?php if ($account['role'] !== "Member") echo '&nbsp;&nbsp;&nbsp;(if any info below needs to be changed or removed, please <a href="mailto:dwheelerw@gmail.com">email me</a>)'; ?>
 					</div>
 					<!-- /.panel-heading -->
 					<div class="panel-body">
@@ -14,6 +14,7 @@
 								$events[$i]['description'] = str_replace('/[c]/', ',', $events[$i]['description']);
 								$events[$i]['description'] = str_replace('/[s]/', ';', $events[$i]['description']);
 								$events[$i]['description'] = str_replace('/[q]/', '"', $events[$i]['description']);
+								$going = strpos($events[$i]['going'], $account['studentname']) !== false;
 								echo '
 							<li' . ($i % 2 == 1 ? ' class="timeline-inverted"' : '') . '>
 								<div class="timeline-badge ' . $events[$i]['color'] . '"><i class="' . $events[$i]['icon'] . '"></i></div>
@@ -24,6 +25,10 @@
 										</div>
 										<div class="timeline-body">
 											<p>' . $events[$i]['description'] . '</p>
+											<hr />
+											<a type="button" class="btn btn-' . ($going ? 'success' : 'danger') . ' btn-sm" href="updateEvent.php?title=' . $events[$i]['title'] . '&going=' . !$going . '">
+												<i class="fa fa-' . ($going ? 'check' : 'times') . '"></i> ' . ($going ? '' : 'Not ') . 'Going</span>
+											</a>
 										</div>
 									</div>
 								</li>' . "\n";

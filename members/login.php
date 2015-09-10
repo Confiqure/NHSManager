@@ -3,7 +3,6 @@ session_start();
 $username = $_POST['username'];
 $password = $_POST['password'];
 $success = false;
-$logins = 0;
 require_once('../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
@@ -13,7 +12,6 @@ try {
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
 		$success = true;
-		$logins = $row['logins'];
 		break;
 	}
 	if ($success) {
@@ -21,7 +19,7 @@ try {
 		$count = strlen($charset) - 1;
 		$length = 10;
 		while ($length--) $token .= $charset[mt_rand(0, $count)];
-		$stmt = $dbh->prepare('UPDATE members SET token = "' .  $token . '", logins = ' . ++$logins . ' WHERE username = :username');
+		$stmt = $dbh->prepare('UPDATE members SET token = "' .  $token . '", logins = ' . ++$row['logins'] . ' WHERE username = :username');
 		$stmt->bindParam(':username', $username, PDO::PARAM_STR);
 		$stmt->execute();
 		$_SESSION['token'] = $code;

@@ -96,6 +96,12 @@ if ($account === false) {
 				case 'pass_changed':
 					echo 'You have successfully changed your password! Use the new one to sign in from now forward.';
 					break;
+				case 'going':
+					echo 'You are now going to the event!';
+					break;
+				case 'not_going':
+					echo 'You are no longer signed up to go to the event.';
+					break;
 			}
 			echo '");</script>';
 			unset($_SESSION['status']);
@@ -186,7 +192,6 @@ if ($account === false) {
 					<i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">
-					<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
 					<li><a href="changepass.html"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
 					<li class="divider"></li>
 					<?php

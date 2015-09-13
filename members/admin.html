@@ -54,7 +54,7 @@ if ($account === false) {
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Section for NHS members to review their hours and responsibilites">
+	<meta name="description" content="Section for NHS members to review their hours and responsibilities">
 	<meta name="author" content="Dylan Wheeler">
 
 	<title>National Honor Society</title>
@@ -239,7 +239,7 @@ if ($account === false) {
 							</div>
 							<div class="col-xs-9 text-right">
 								<div class="huge"><?php if ($account['role'] != "Administrator") echo $account['community']; else echo "NA"; ?></div>
-								<div>Community Service Hours</div>
+								<div>Community Service</div>
 							</div>
 						</div>
 					</div>
@@ -254,7 +254,7 @@ if ($account === false) {
 							</div>
 							<div class="col-xs-9 text-right">
 								<div class="huge"><?php if ($account['role'] != "Administrator") echo $account['tutoring']; else echo "NA"; ?></div>
-								<div>Tutoring Hours</div>
+								<div>Tutoring</div>
 							</div>
 						</div>
 					</div>
@@ -265,7 +265,7 @@ if ($account === false) {
 
 		<div class="row">
 			<div class="col-lg-9">
-<?php if ($total_percent != 100) include('panel_record.html'); else include('panel_events.html');?>
+<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panel_record.html'); else include('panel_events.html');?>
 			</div>
 			<!-- /.col-lg-8 -->
 			<div class="col-lg-3">
@@ -312,7 +312,7 @@ if ($account === false) {
 		<!-- /.row -->'; } ?>
 		<div class="row">
 			<div class="col-lg-12">
-<?php if ($total_percent != 100) include('panel_events.html'); else include('panel_record.html'); ?>
+<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panel_events.html'); else include('panel_record.html'); ?>
 			</div>
 		</div>
 	</div>

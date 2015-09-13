@@ -50,7 +50,7 @@ try {
 	$icon = strtolower($_POST['icon']);
 	if ($icon == '' || strpos($icon, '-') == false) $icon = 'fa fa-check';
 	else $icon = substr($icon, 0, strpos($icon, '-')) . ' ' . $icon;
-	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$title\",\"" . $date[1] . '/' . $date[2] . '/' . $date[0] . "\",\"$color\",\"$icon\",\"$desc\")");
+	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$title\",\"" . $date[1] . '/' . $date[2] . '/' . $date[0] . "\",\"$color\",\"$icon\",\"$desc\",\"\")");
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);
@@ -59,7 +59,7 @@ try {
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";
-	$mail_body = "An exception occurred on the NHS service log page: " . $e->getMessage();
+	$mail_body = "An exception occurred on the NHS add event page: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
 	echo "Feature currently unavailable. Please try again later.";
 	die();

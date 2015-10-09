@@ -7,7 +7,7 @@
 						<?php
 							echo '<ul class="timeline">';
 							for ($i = 0; $i < sizeof($events); $i++) {
-								if ($events[$i] == null) continue;
+								if ($events[$i] == null || strtotime($events[$i]['date']) + 86340 < time()) continue;
 								$events[$i]['title'] = str_replace('/[c]/', ',', $events[$i]['title']);
 								$events[$i]['title'] = str_replace('/[s]/', ';', $events[$i]['title']);
 								$events[$i]['title'] = str_replace('/[q]/', '"', $events[$i]['title']);
@@ -27,8 +27,13 @@
 											<p>' . $events[$i]['description'] . '</p>
 											<hr />
 											<a type="button" class="btn btn-' . ($going ? 'success' : 'danger') . ' btn-sm" href="updateEvent.php?title=' . $events[$i]['title'] . '&going=' . !$going . '">
-												<i class="fa fa-' . ($going ? 'check' : 'times') . '"></i> ' . ($going ? '' : 'Not ') . 'Going</span>
-											</a>
+												<span><i class="fa fa-' . ($going ? 'check' : 'times') . '"></i> ' . ($going ? '' : 'Not ') . 'Going</span>
+											</a>';
+								if ($account['role'] !== 'Member') echo '
+											<a type="button" class="btn btn-info btn-sm" href="getAttendees.php?id=' . $events[$i]['id'] . '">
+												<span>Who\'s going?</span>
+											</a>';
+								echo '
 										</div>
 									</div>
 								</li>' . "\n";

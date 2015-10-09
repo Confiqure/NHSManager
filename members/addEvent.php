@@ -50,7 +50,11 @@ try {
 	$icon = strtolower($_POST['icon']);
 	if ($icon == '' || strpos($icon, '-') == false) $icon = 'fa fa-check';
 	else $icon = substr($icon, 0, strpos($icon, '-')) . ' ' . $icon;
-	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$title\",\"" . $date[1] . '/' . $date[2] . '/' . $date[0] . "\",\"$color\",\"$icon\",\"$desc\",\"\")");
+	$charset = 'abcdefghijklmnopqrstuvwxyz';
+	$count = strlen($charset) - 1;
+	$length = 4;
+	while ($length--) $id .= $charset[mt_rand(0, $count)];
+	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$id\",\"$title\",\"" . $date[1] . '/' . $date[2] . '/' . $date[0] . "\",\"$color\",\"$icon\",\"$desc\",\"\")");
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);
@@ -61,7 +65,6 @@ try {
 	$subject = "ERROR - SQL Connection";
 	$mail_body = "An exception occurred on the NHS add event page: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
-	echo "Feature currently unavailable. Please try again later.";
-	die();
+	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 $account = false;
-$events = $minutes = $pending = array();
+$tutors = $events = $minutes = $pending = array();
 if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 	require_once('../dbconfig.php');
 	try {
@@ -12,6 +12,11 @@ if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 		while ($row = $stmt->fetch()) {
 			$account = $row;
 			break;
+		}
+		$stmt = $dbh->prepare('SELECT id,subjects FROM tutor_req');
+		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			$tutors[sizeof($tutors)] = $row;
 		}
 		$stmt = $dbh->prepare('SELECT * FROM events ORDER BY date ASC');
 		$stmt->execute();
@@ -101,6 +106,9 @@ if ($account === false) {
 					break;
 				case 'not_going':
 					echo 'You are no longer signed up to go to the event.';
+					break;
+				case 'tutor_confirmed':
+					echo 'You have successfully signed up to tutor! Please check your email for further information.';
 					break;
 			}
 			echo '");</script>';
@@ -250,7 +258,7 @@ if ($account === false) {
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-3">
-								<i class="fa fa-university fa-5x"></i>
+								<i class="fa fa-book fa-5x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
 								<div class="huge"><?php if ($account['role'] != "Administrator") echo floor($account['tutoring']) == $account['tutoring'] ? substr($account['tutoring'], 0, strlen($account['tutoring']) - 2) : $account['tutoring']; else echo "NA"; ?></div>
@@ -269,6 +277,32 @@ if ($account === false) {
 			</div>
 			<!-- /.col-lg-8 -->
 			<div class="col-lg-3">
+				<?php
+					if (sizeof($tutors) != 0) {
+						echo '
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="fa fa-book fa-fw"></i> Tutoring Requests
+					</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<div class="list-group">';
+						for ($i = sizeof($tutors) - 1; $i >= 0; $i--) {
+							if ($tutors[$i] == null) continue;
+							echo '
+							<a href="tutor.html?id=' . $tutors[$i]['id'] . '" class="list-group-item">
+								' . (strlen($tutors[$i]['subjects']) > 30 ? substr($tutors[$i]['subjects'], 0, 30) . '...' : $tutors[$i]['subjects']) . '
+							</a>' . "\n";
+						}
+						echo '
+						</div>
+						<!-- /.list-group -->
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->';
+					}
+				?>
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<i class="fa fa-clipboard fa-fw"></i> Meeting Minutes

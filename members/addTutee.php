@@ -11,17 +11,18 @@ try {
 		$account = $row;
 		break;
 	}
-	if ($account === false || ($account['role'] !== 'Administrator' && $account['role'] !== 'Secretary')) {
+	if ($account === false || $account['role'] === 'Member') {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
 		header('Location: http://nhs.comxa.com/members/');
 		return;
 	}
-	$stmt = $dbh->prepare('INSERT INTO minutes VALUES(:date,:link,:absent)');
-	$stmt->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
-	$stmt->bindParam(':link', $_POST['link'], PDO::PARAM_STR);
-	$stmt->bindParam(':absent', $_POST['absent'], PDO::PARAM_STR);
+	$charset = 'abcdefghijklmnopqrstuvwxyz';
+	$count = strlen($charset) - 1;
+	$length = 4;
+	while ($length--) $id .= $charset[mt_rand(0, $count)];
+	$stmt = $dbh->prepare('INSERT INTO tutor_req VALUES("' . $id . '","' . $_POST['name'] . '","' . $_POST['grade'] . '","' . $_POST['subjects'] . '","' . $_POST['free'] . '")');
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);
@@ -30,7 +31,7 @@ try {
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";
-	$mail_body = "An exception occurred on the NHS service log page: " . $e->getMessage();
+	$mail_body = "An exception occurred on the NHS add tutee page: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
 	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
 }

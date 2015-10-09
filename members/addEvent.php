@@ -10,7 +10,7 @@ $account = false;
 require_once('../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
-	$stmt = $dbh->prepare('SELECT * FROM members WHERE token = :token');
+	$stmt = $dbh->prepare('SELECT role FROM members WHERE token = :token');
 	$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {

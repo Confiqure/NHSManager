@@ -7,6 +7,7 @@ Requires an SQL database for information storage.  The configured database has a
 - "events" has columns: id, title, date, color, icon, description, and going
 - "members" has columns: username, password, token, studentname, role, tutoring, community, approved, pending, and logins
 - "minutes" has columns: date, link, and absent
+- "tutor_req" has columns: id, name, grade, subjects, and free
 
 Special Permissions:
 - President: can add events to timeline

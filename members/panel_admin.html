@@ -12,13 +12,13 @@
 										<div class="col-sm-3">
 											<div class="form-group">
 												<label>Event Title</label>
-												<input class="form-control" name="title" maxlength="32" placeholder="Title the event">
+												<input class="form-control" name="title" maxlength="32" placeholder="Title the event" />
 											</div>
 										</div>
 										<div class="col-sm-3">
 											<div class="form-group">
 												<label>Event Date</label>
-												<input class="form-control" type="date" name="date" min="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>">
+												<input class="form-control" type="date" name="date" min="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>" />
 											</div>
 										</div>
 										<div class="col-sm-3">
@@ -36,7 +36,7 @@
 										<div class="col-sm-3">
 											<div class="form-group">
 												<label>Badge Icon Code <sup><a href="../support/icons.html" target="_blank">[?]</a></sup></label>
-												<input class="form-control" name="icon" maxlength="32" placeholder="Click the '?' for help">
+												<input class="form-control" name="icon" maxlength="32" placeholder="Click the '?' for help" />
 											</div>
 										</div>
 									</div>
@@ -45,6 +45,38 @@
 										<textarea class="form-control" name="description" rows="3" placeholder="Add a brief description so that people know what the event is!"></textarea>
 									</div>
 									<button type="submit" class="btn btn-default">Add to Timeline</button>
+								</form>
+							</div>
+							<!-- /.col-lg-12 (nested) -->
+						</div>
+						<!-- /.row -->
+						<div class="row">
+							<div class="col-lg-12">
+								<h2>Request A Tutor</h2>
+								<form role="form" action="addTutee.php" method="POST">
+									<div class="row">
+										<div class="col-sm-2">
+											<div class="form-group">
+												<input class="form-control" name="name" maxlength="32" placeholder="Student Name" />
+											</div>
+										</div>
+										<div class="col-sm-2">
+											<div class="form-group">
+												<input class="form-control" name="grade" maxlength="2" placeholder="Grade" />
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-group">
+												<input class="form-control" name="subjects" maxlength="256" placeholder="Subjects" />
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-group">
+												<input class="form-control" name="free" maxlength="256" placeholder="Availability" />
+											</div>
+										</div>
+									</div>
+									<button type="submit" class="btn btn-default">Post to Website</button>
 								</form>
 							</div>
 							<!-- /.col-lg-12 (nested) -->
@@ -118,13 +150,13 @@
 										<div class="col-sm-3">
 											<div class="form-group">
 												<label>Meeting Date</label>
-												<input class="form-control" name="date" maxlength="32" placeholder="Month Date, Year" value="' . date('F d, Y') . '">
+												<input class="form-control" name="date" maxlength="32" placeholder="Month Date, Year" value="' . date('F d, Y') . '" />
 											</div>
 										</div>
 										<div class="col-sm-9">
 											<div class="form-group">
 												<label>URL to Minutes</label>
-												<input class="form-control" name="link" maxlength="256" placeholder="Upload the minutes to Google Drive, give it public access via URL, and link it here">
+												<input class="form-control" name="link" maxlength="256" placeholder="Upload the minutes to Google Drive, give it public access via URL, and link it here" />
 											</div>
 										</div>
 									</div>

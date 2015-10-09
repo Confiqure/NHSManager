@@ -2,9 +2,9 @@
 $account_combined = false;
 $max_combined = 0;
 $account_community = false;
-$max_community = 0;
+$max_community = $total_community = 0;
 $account_tutoring = false;
-$max_tutoring = 0;
+$max_tutoring = $total_tutoring = 0;
 require_once('dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
@@ -24,6 +24,8 @@ try {
 				$account_tutoring = $row;
 				$max_tutoring = $row['tutoring'];
 			}
+			$total_community += $row['community'];
+			$total_tutoring += $row['tutoring'];
 		}
 		unset($stmt);
 		unset($dbh);
@@ -120,7 +122,7 @@ try {
 			<div class="row">
 				<div class="col-sm-8">
 					<h2>What We Do</h2>
-					<p>The National Honor Society is a group of honors students at Bow High School who have been carefully picked to represent our school. The National Honor Society handles most of the volunteering that the school does for organizations as well as provides free tutoring services to the school. <a href="https://docs.google.com/forms/d/1NaGzCJ5m-7ihMaNPuD6oij5igycsg93JvsMt85j3oug/viewform" target="_blank">Let us know if you need tutoring help!</a></p>
+					<p>The National Honor Society is a group of honors students at Bow High School who have been carefully picked to represent our school. The National Honor Society handles most of the volunteering that the school does for organizations as well as provides free tutoring services to the school. To date, our Chapter has accumulated <b><?php echo floor($total_community); ?></b> community service hours and <b><?php echo floor($total_tutoring); ?></b> tutoring hours. <a href="https://docs.google.com/forms/d/1NaGzCJ5m-7ihMaNPuD6oij5igycsg93JvsMt85j3oug/viewform" target="_blank">Let us know if you need tutoring help!</a></p>
 				</div>
 				<div class="col-sm-4">
 					<h2>Advisors</h2>

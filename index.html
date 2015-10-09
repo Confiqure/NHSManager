@@ -217,10 +217,10 @@ try {
 							<p><?php echo '<strong>' . $account_combined['studentname'] . '</strong> has been proven a noteworthy member of the Society by amassing a total of <strong>' . $max_combined . '</strong> hours of tutoring and community service! This is the highest combined total of any of our members. Congratulations!';?></p>
 						</div>
 						<div class="col-sm-4">
-							<p><?php echo '<strong>' . $account_community['studentname'] . '</strong> has given back to the community by volunteering through the Society earning <strong>' . $max_community . '</strong> hours! This is the most community service done by any of our members. Awesome job!';?></p>
+							<p><?php echo '<strong>' . $account_community['studentname'] . '</strong> has given back to the community by volunteering through the Society earning <strong>' . (floor($max_community) == $max_community ? substr($max_community, 0, strlen($max_community) - 2) : $max_community) . '</strong> hours! This is the most community service done by any of our members. Awesome job!';?></p>
 						</div>
 						<div class="col-sm-4">
-							<p><?php echo '<strong>' . $account_tutoring['studentname'] . '</strong> has earned the title of Most Tutoring Completed by donating <strong>' . $max_tutoring . '</strong> hours toward benefiting the education of fellow peers! You stand out among fellow Society members for your altruism. Well done!';?></p>
+							<p><?php echo '<strong>' . $account_tutoring['studentname'] . '</strong> has earned the title of Most Tutoring Completed by donating <strong>' . (floor($max_tutoring) == $max_tutoring ? substr($max_tutoring, 0, strlen($max_tutoring) - 2) : $max_tutoring) . '</strong> hours toward benefiting the education of fellow peers! You stand out among fellow Society members for your altruism. Well done!';?></p>
 						</div>
 					</div>
 				</div>

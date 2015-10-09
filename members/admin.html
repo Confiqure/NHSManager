@@ -37,7 +37,7 @@ if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 		$subject = "ERROR - SQL Connection";
 		$mail_body = "An exception occurred on the NHS admin fetcher: " . $e->getMessage();
 		mail($recipient, $subject, $mail_body);
-		die("Feature currently unavailable. Please try again later.");
+		die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
 	}
 }
 if ($account === false) {
@@ -226,7 +226,7 @@ if ($account === false) {
 						Announcements
 					</div>
 					<div class="panel-footer">
-						Welcome to the new school year! Make sure to attend NHS meetings every Thursday during break, especially during these next few weeks.
+						Please sign up for events with your friends! Ms. Woo uses information on this website to figure out who is going.
 					</div>
 				</div>
 			</div>
@@ -238,7 +238,7 @@ if ($account === false) {
 								<i class="fa fa-heart fa-5x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
-								<div class="huge"><?php if ($account['role'] != "Administrator") echo $account['community']; else echo "NA"; ?></div>
+								<div class="huge"><?php if ($account['role'] != "Administrator") echo floor($account['community']) == $account['community'] ? substr($account['community'], 0, strlen($account['community']) - 2) : $account['community']; else echo "NA"; ?></div>
 								<div>Community Service</div>
 							</div>
 						</div>
@@ -253,7 +253,7 @@ if ($account === false) {
 								<i class="fa fa-university fa-5x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
-								<div class="huge"><?php if ($account['role'] != "Administrator") echo $account['tutoring']; else echo "NA"; ?></div>
+								<div class="huge"><?php if ($account['role'] != "Administrator") echo floor($account['tutoring']) == $account['tutoring'] ? substr($account['tutoring'], 0, strlen($account['tutoring']) - 2) : $account['tutoring']; else echo "NA"; ?></div>
 								<div>Tutoring</div>
 							</div>
 						</div>
@@ -283,7 +283,9 @@ if ($account === false) {
 									$minutes[$i]['absent'] = explode(',', $minutes[$i]['absent']);
 									$is_absent = false;
 									foreach ($minutes[$i]['absent'] as $name) {
-										if (strpos($account['studentname'], trim($name)) === 0) {
+										$name = trim($name);
+										if ($name == '') continue;
+										if (strpos($account['studentname'], $name) === 0) {
 											$is_absent = true;
 											break;
 										}

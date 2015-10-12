@@ -36,7 +36,6 @@ try {
 	$subject = "ERROR - SQL Connection";
 	$mail_body = "An exception occurred on the NHS password changer page: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
-	echo "Feature currently unavailable. Please try again later.";
-	die();
+	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
 }
 ?>

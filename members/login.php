@@ -22,7 +22,7 @@ try {
 		$stmt = $dbh->prepare('UPDATE members SET token = "' .  $token . '", logins = ' . ++$row['logins'] . ' WHERE username = :username');
 		$stmt->bindParam(':username', $username, PDO::PARAM_STR);
 		$stmt->execute();
-		$_SESSION['token'] = $code;
+		$_SESSION['token'] = $token;
 		header('Location: http://nhs.comxa.com/members/');
 	} else {
 		header("Location: http://nhs.comxa.com/members/?username=$username");
@@ -34,7 +34,6 @@ try {
 	$subject = "ERROR - SQL Connection";
 	$mail_body = "An exception occurred on the NHS log-in page: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
-	echo "Feature currently unavailable. Please try again later.";
-	die();
+	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
 }
 ?>

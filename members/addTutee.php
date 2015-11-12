@@ -22,7 +22,12 @@ try {
 	$count = strlen($charset) - 1;
 	$length = 4;
 	while ($length--) $id .= $charset[mt_rand(0, $count)];
-	$stmt = $dbh->prepare('INSERT INTO tutor_req VALUES("' . $id . '","' . $_POST['name'] . '","' . $_POST['grade'] . '","' . $_POST['subjects'] . '","' . $_POST['free'] . '")');
+	$stmt = $dbh->prepare('INSERT INTO tutor_req VALUES("' . $id . '",:name,:grade,:contact,:subjects,:free)');
+	$stmt->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
+	$stmt->bindParam(':grade', $_POST['grade'], PDO::PARAM_STR);
+	$stmt->bindParam(':contact', $_POST['contact'], PDO::PARAM_STR);
+	$stmt->bindParam(':subjects', $_POST['subjects'], PDO::PARAM_STR);
+	$stmt->bindParam(':free', $_POST['free'], PDO::PARAM_STR);
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);

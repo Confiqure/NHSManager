@@ -34,17 +34,17 @@ try {
 	$desc = str_replace('"', '/[q]/', $desc);
 	$color = '';
 	switch ($_POST['color']) {
-		case 'Yellow':
-			$color = 'warning';
-			break;
 		case 'Red':
 			$color = 'danger';
+			break;
+		case 'Green':
+			$color = 'success';
 			break;
 		case 'Blue':
 			$color = 'info';
 			break;
-		case 'Green':
-			$color = 'success';
+		case 'Yellow':
+			$color = 'warning';
 			break;
 	}
 	$icon = strtolower($_POST['icon']);
@@ -54,7 +54,7 @@ try {
 	$count = strlen($charset) - 1;
 	$length = 4;
 	while ($length--) $id .= $charset[mt_rand(0, $count)];
-	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$id\",\"$title\",\"" . $date[1] . '/' . $date[2] . '/' . $date[0] . "\",\"$color\",\"$icon\",\"$desc\",\"\")");
+	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$id\",\"$title\",\"" . $_POST['date'] . "\",\"$color\",\"$icon\",\"$desc\",\"\")");
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);

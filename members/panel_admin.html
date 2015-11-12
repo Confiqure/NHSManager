@@ -35,11 +35,10 @@
 											<div class="form-group">
 												<label>Badge Color</label>
 												<select class="form-control" name="color">
-													<option selected>Grey</option>
-													<option>Yellow</option>
-													<option>Red</option>
-													<option>Blue</option>
+													<option selected>Red</option>
 													<option>Green</option>
+													<option>Blue</option>
+													<option>Yellow</option>
 												</select>
 											</div>
 										</div>
@@ -61,7 +60,7 @@
 								<h3>Request a tutor</h3>
 								<form role="form" action="addTutee.php" method="POST">
 									<div class="row">
-										<div class="col-sm-2">
+										<div class="col-sm-4">
 											<div class="form-group">
 												<input class="form-control" name="name" maxlength="32" placeholder="Student Name" />
 											</div>
@@ -71,12 +70,19 @@
 												<input class="form-control" name="grade" maxlength="2" placeholder="Grade" />
 											</div>
 										</div>
-										<div class="col-sm-4">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<input class="form-control" name="contact" maxlength="256" placeholder="Contact info" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-6">
 											<div class="form-group">
 												<input class="form-control" name="subjects" maxlength="256" placeholder="Subjects" />
 											</div>
 										</div>
-										<div class="col-sm-4">
+										<div class="col-sm-6">
 											<div class="form-group">
 												<input class="form-control" name="free" maxlength="256" placeholder="Availability" />
 											</div>

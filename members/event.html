@@ -4,26 +4,46 @@ if (!isset($_SESSION['token']) || strlen($_SESSION['token']) !== 10) {
 header('Location: http://nhs.comxa.com/');
 exit();
 }
-$request = false;
+$event = false;
 require_once('../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
-	$stmt = $dbh->prepare('SELECT id,grade,subjects,free FROM tutor_req WHERE id = :id');
+	$stmt = $dbh->prepare('SELECT * FROM events WHERE id = :id');
 	$stmt->bindParam(':id', $_GET['id'], PDO::PARAM_STR);
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
-		$request = $row;
+		$event = $row;
 		break;
 	}
 	unset($stmt);
 	unset($dbh);
+	if ($event === false) {
+		$_SESSION['status'] = 'error';
+		header('Location: http://nhs.comxa.com/members/');
+		return;
+	}
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";
-	$mail_body = "An exception occurred on the NHS tutor signup page: " . $e->getMessage();
+	$mail_body = "An exception occurred on the NHS event attendees page: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
 	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
 }
+switch ($event['color']) {
+	case 'danger':
+		$event['color'] = 'red';
+		break;
+	case 'success':
+		$event['color'] = 'green';
+		break;
+	case 'info':
+		$event['color'] = 'primary';
+		break;
+	case 'warning':
+		$event['color'] = 'yellow';
+		break;
+}
+$event['going'] = explode(', ', $event['going'] == '' ? 'No one' : substr($event['going'], 0, strlen($event['going']) - 2));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +53,7 @@ try {
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Form for tutor signups">
+	<meta name="description" content="Page for viewing event attendees">
 	<meta name="author" content="Dylan Wheeler">
 
 	<title>National Honor Society</title>
@@ -60,29 +80,34 @@ try {
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
-				<div class="login-panel panel panel-green">
+				<div class="login-panel panel panel-<?php echo $event['color']; ?>">
 					<div class="panel-heading">
-						<h3 class="panel-title">Tutoring Signup Form</h3>
+						<h3 class="panel-title"><?php echo $event['title'] . ' on ' . date('n/j/Y', strtotime($event['date'])); ?></h3>
 					</div>
 					<div class="panel-body">
-						<form role="form" action="tutoring_receipt.php" method="POST">
-							<fieldset>
-								<div class="form-group">
-									<label>Grade Level: <?php echo $request['grade']; ?></label>
-								</div>
-								<div class="form-group">
-									<label>Subjects Needing Help: <?php echo $request['subjects']; ?></label>
-								</div>
-								<div class="form-group">
-									<label>Availability: <?php echo $request['free']; ?></label>
-								</div>
-								<div class="form-group">
-									<input name="agree" type="checkbox" required /> By checking this box, I agree to make contact with my tutor and handle his/her request. If I run into any difficulties, I will talk to the right people to make sure this request goes back online for someone else to take. <i>Contact information will be available on the following page.</i>
-								</div>
-								<input name="id" type="text" value="<?php echo $request['id']; ?>" hidden />
-								<button type="submit" class="btn btn-lg btn-success btn-block">Sign up!</button>
-							</fieldset>
-						</form>
+						<h4>These members have indicated they are attending this event:</h4>
+						<div class="row">
+							<div class="col-md-6">
+								<ul>
+									<?php
+										for ($i = 0; $i < sizeof($event['going']); $i += 2) {
+											echo '
+									<li>' . $event['going'][$i] . '</li>';
+										}
+									?>
+								</ul>
+							</div>
+							<div class="col-md-6">
+								<ul>
+									<?php
+										for ($i = 1; $i < sizeof($event['going']); $i += 2) {
+											echo '
+									<li>' . $event['going'][$i] . '</li>';
+										}
+									?>
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

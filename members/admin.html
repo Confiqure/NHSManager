@@ -18,7 +18,7 @@ if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 		while ($row = $stmt->fetch()) {
 			$tutors[sizeof($tutors)] = $row;
 		}
-		$stmt = $dbh->prepare('SELECT * FROM events ORDER BY date ASC');
+		$stmt = $dbh->prepare('SELECT * FROM events WHERE date >= "' . date('Y-m-d', time()) . '" ORDER BY date ASC');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$events[sizeof($events)] = $row;
@@ -234,7 +234,7 @@ if ($account === false) {
 						Announcements
 					</div>
 					<div class="panel-footer">
-						Please sign up for events with your friends! Ms. Woo uses information on this website to figure out who is going.
+						Stop by at least once a week for new updates! We know who is and isn't checking in during our virtual meetings.
 					</div>
 				</div>
 			</div>

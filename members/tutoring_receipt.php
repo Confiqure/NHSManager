@@ -29,7 +29,7 @@ try {
 		$stmt->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
 		$stmt->execute();
 		file_put_contents('../stats/tutor_req.txt', file_get_contents('../stats/tutor_req.txt') + 1);
-		echo '<center><div width="60%"><h1>Congratulations!</h1><h3>You will be tutoring ' . $request['name'] . ' from grade ' . $request['grade'] . ' in the subject area(s): ' . $request['subjects'] . ' during one or more of the following free times: ' . $request['free'] . '</h3><h2 style="color:red">Please take note of this information now, for when you leave the page it will be lost.</h2><a href="http://nhs.comxa.com/members"><h5>Click here to return</h5></a></div></center>';
+		echo '<center><div width="60%"><h1>Congratulations!</h1><ul><li>You will be tutoring: ' . $request['name'] . '</li><li>Grade: ' . $request['grade'] . '</li><li>Subject area(s): ' . $request['subjects'] . '</li><li>Free times: ' . $request['free'] . '</li><li>Contact info: ' . $request['contact'] . '</li></ul><h2 style="color:red">Please take note of this information now, for when you leave the page it will be lost.</h2><a href="http://nhs.comxa.com/members"><h5>Click here to return</h5></a></div></center>';
 	} else {
 		$_SESSION['status'] = 'error';
 		header('Location: http://nhs.comxa.com/members/');

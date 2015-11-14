@@ -11,7 +11,7 @@ try {
 			unset($stmt);
 			unset($dbh);
 			$_SESSION['status'] = 'error';
-			header('Location: http://nhs.comxa.com/members/');
+			header('Location: http://www.bownhs.org/members/');
 			return;
 		}
 		break;

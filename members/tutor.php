@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['token']) || strlen($_SESSION['token']) !== 10) {
-header('Location: http://nhs.comxa.com/');
+header('Location: http://www.bownhs.org/');
 exit();
 }
 $request = false;

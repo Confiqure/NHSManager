@@ -15,7 +15,7 @@ try {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
-		header('Location: http://nhs.comxa.com/members/');
+		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
 	$charset = 'abcdefghijklmnopqrstuvwxyz';
@@ -32,7 +32,7 @@ try {
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';
-	header('Location: http://nhs.comxa.com/members/');
+	header('Location: http://www.bownhs.org/members/');
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";

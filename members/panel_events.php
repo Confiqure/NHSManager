@@ -29,7 +29,7 @@
 											<a type="button" class="btn btn-' . ($going ? 'danger' : 'success') . ' btn-sm" href="updateEvent.php?title=' . $events[$i]['title'] . '&going=' . !$going . '">
 												' . ($going ? 'Remove your name' : 'Sign up') . '
 											</a>
-											<a type="button" class="btn btn-info btn-sm" href="event.html?id=' . $events[$i]['id'] . '">
+											<a type="button" class="btn btn-info btn-sm" href="event.php?id=' . $events[$i]['id'] . '">
 												<span>Who\'s going?</span>
 											</a>
 										</div>

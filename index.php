@@ -264,7 +264,7 @@ try {
 			<div class="row">
 				<div class="col-lg-12">
 					<h2>Contact</h2>
-					<p>If there are any problems with this website, you have a suggestion for content, or you wish to contact me about other computer-related things, I can be reached at <a href="mailto:dwheelerw@gmail.com">dwheelerw@gmail.com</a>. If you are intending to contact our advisors, their contact information is available <a href="#about">above</a>.</p>
+					<p>If there are any problems with this website, you have a suggestion for content, or you wish to contact the Webmaster in general, send an email to <a href="mailto:ask@bownhs.org">ask@bownhs.org</a>. If you are intending to contact our advisors, their contact information is available <a href="#about">above</a>.</p>
 					<p>Bow High School resides at 55 Falcon Way in Bow, New Hampshire. The office can be reached at (603) 228-2210 or faxed at (603) 228-2212.</p>
 				</div>
 			</div>

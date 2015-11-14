@@ -3,7 +3,7 @@ session_start();
 $date = explode('-', $_POST['date']);
 if (!checkdate($date[1], $date[2], $date[0]) || !is_numeric($_POST['hours'])) {
 	$_SESSION['status'] = 'invalid';
-	header('Location: http://nhs.comxa.com/members/');
+	header('Location: http://www.bownhs.org/members/');
 	return;
 }
 $account = false;
@@ -21,7 +21,7 @@ try {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
-		header('Location: http://nhs.comxa.com/members/');
+		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
 	$desc = $_POST['description'];
@@ -38,7 +38,7 @@ try {
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';
-	header('Location: http://nhs.comxa.com/members/');
+	header('Location: http://www.bownhs.org/members/');
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";

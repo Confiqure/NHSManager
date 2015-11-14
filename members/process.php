@@ -39,7 +39,7 @@ try {
 	}
 	unset($stmt);
 	unset($dbh);
-	header("Location: http://nhs.comxa.com/members/");
+	header("Location: http://www.bownhs.org/members/");
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";

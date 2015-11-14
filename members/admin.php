@@ -48,7 +48,7 @@ if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 if ($account === false) {
 	session_unset();
 	session_destroy();
-	header('Location: http://nhs.comxa.com/members/');
+	header('Location: http://www.bownhs.org/members/');
 }
 ?>
 <!DOCTYPE html>
@@ -200,7 +200,7 @@ if ($account === false) {
 					<i class="fa fa-user fa-lg fa-fw"></i>  <i class="fa fa-caret-down fa-lg"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">
-					<li><a href="changepass.html"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
+					<li><a href="changepassword.php"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
 					<li class="divider"></li>
 					<?php
 					if ($account['role'] === 'Administrator' || $account['role'] === 'Parliamentarian') echo '
@@ -273,7 +273,7 @@ if ($account === false) {
 
 		<div class="row">
 			<div class="col-lg-9">
-<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panel_record.html'); else include('panel_events.html');?>
+<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panel_record.php'); else include('panel_events.php');?>
 			</div>
 			<!-- /.col-lg-8 -->
 			<div class="col-lg-3">
@@ -290,7 +290,7 @@ if ($account === false) {
 						for ($i = sizeof($tutors) - 1; $i >= 0; $i--) {
 							if ($tutors[$i] == null) continue;
 							echo '
-							<a href="tutor.html?id=' . $tutors[$i]['id'] . '" class="list-group-item">
+							<a href="tutor.php?id=' . $tutors[$i]['id'] . '" class="list-group-item">
 								' . (strlen($tutors[$i]['subjects']) > 30 ? substr($tutors[$i]['subjects'], 0, 30) . '...' : $tutors[$i]['subjects']) . '
 							</a>' . "\n";
 						}
@@ -343,12 +343,12 @@ if ($account === false) {
 		<!-- /.row -->
 		<?php if ($account['role'] !== 'Member') { echo'
 		<div class="row">
-			<div class="col-lg-12">'; include('panel_admin.html'); echo '</div>
+			<div class="col-lg-12">'; include('panel_admin.php'); echo '</div>
 		</div>
 		<!-- /.row -->'; } ?>
 		<div class="row">
 			<div class="col-lg-12">
-<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panel_events.html'); else include('panel_record.html'); ?>
+<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panel_events.php'); else include('panel_record.php'); ?>
 			</div>
 		</div>
 	</div>

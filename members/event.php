@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['token']) || strlen($_SESSION['token']) !== 10) {
-header('Location: http://nhs.comxa.com/');
+header('Location: http://www.bownhs.org/');
 exit();
 }
 $event = false;
@@ -19,7 +19,7 @@ try {
 	unset($dbh);
 	if ($event === false) {
 		$_SESSION['status'] = 'error';
-		header('Location: http://nhs.comxa.com/members/');
+		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
 } catch (Exception $e) {

@@ -15,7 +15,7 @@ try {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
-		header('Location: http://nhs.comxa.com/members/');
+		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
 	$stmt = $dbh->prepare('INSERT INTO minutes VALUES(:date,:link,:absent)');
@@ -26,7 +26,7 @@ try {
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';
-	header('Location: http://nhs.comxa.com/members/');
+	header('Location: http://www.bownhs.org/members/');
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";

@@ -15,7 +15,7 @@ try {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
-		header('Location: http://nhs.comxa.com/members/');
+		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
 	$stmt = $dbh->prepare('SELECT going FROM events WHERE title = :title');
@@ -30,7 +30,7 @@ try {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
-		header('Location: http://nhs.comxa.com/members/');
+		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
 	$stmt = $dbh->prepare('UPDATE events SET going = :going WHERE title = :title');
@@ -40,7 +40,7 @@ try {
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = $_GET['going'] == '1' ? 'going' : 'not_going';
-	header('Location: http://nhs.comxa.com/members/');
+	header('Location: http://www.bownhs.org/members/');
 } catch (Exception $e) {
 	$recipient = "dwheelerw@gmail.com";
 	$subject = "ERROR - SQL Connection";

@@ -4,7 +4,7 @@ $current = $_POST['current'];
 $password1 = $_POST['password'];
 $password2 = $_POST['password2'];
 if ($password1 !== $password2) {
-	header('Location: http://nhs.comxa.com/members/changepass.html?mismatch=true');
+	header('Location: http://www.bownhs.org/members/changepassword.php?mismatch=true');
 	return;
 }
 $success = false;
@@ -25,9 +25,9 @@ try {
 		$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
 		$stmt->execute();
 		$_SESSION['status'] = 'pass_changed';
-		header('Location: http://nhs.comxa.com/members/');
+		header('Location: http://www.bownhs.org/members/');
 	} else {
-		header('Location: http://nhs.comxa.com/members/changepass.html?failure=true');
+		header('Location: http://www.bownhs.org/members/changepassword.php?failure=true');
 	}
 	unset($stmt);
 	unset($dbh);

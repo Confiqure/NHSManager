@@ -10,7 +10,7 @@ require_once('dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	try {
-		$stmt = $dbh->prepare('SELECT studentname,community,tutoring FROM members');
+		$stmt = $dbh->prepare('SELECT `studentname`, `community`, `tutoring` FROM `members`');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			if ($row['tutoring'] + $row['community'] > $max_combined) {
@@ -28,7 +28,7 @@ try {
 			$total_community += $row['community'];
 			$total_tutoring += $row['tutoring'];
 		}
-		$stmt = $dbh->prepare('SELECT id FROM events');
+		$stmt = $dbh->prepare('SELECT `id` FROM `events`');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$events++;
@@ -39,9 +39,9 @@ try {
 		echo "Exception: " . $f->getMessage() . "<br />";
 	}
 } catch (Exception $e) {
-	$recipient = "dwheelerw@gmail.com";
-	$subject = "ERROR - SQL Connection";
-	$mail_body = "An exception occurred on the NHS homepage: " . $e->getMessage();
+	$recipient = "errors@bownhs.org";
+	$subject = "SQL Connection";
+	$mail_body = "An exception occurred on the homepage: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
 }
 ?>

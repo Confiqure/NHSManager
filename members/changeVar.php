@@ -11,32 +11,25 @@ try {
 		$account = $row;
 		break;
 	}
-	if ($account === false || $account['role'] === 'Member') {
+	if ($account === false || $account['role'] !== 'Administrator') {
 		unset($stmt);
 		unset($dbh);
 		$_SESSION['status'] = 'error';
 		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
-	$charset = 'abcdefghijklmnopqrstuvwxyz';
-	$count = strlen($charset) - 1;
-	$length = 4;
-	while ($length--) $id .= $charset[mt_rand(0, $count)];
-	$stmt = $dbh->prepare('INSERT INTO `tutor_req` VALUES("' . $id . '", :name, :grade, :contact, :subjects, :free)');
-	$stmt->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
-	$stmt->bindParam(':grade', $_POST['grade'], PDO::PARAM_STR);
-	$stmt->bindParam(':contact', $_POST['contact'], PDO::PARAM_STR);
-	$stmt->bindParam(':subjects', $_POST['subjects'], PDO::PARAM_STR);
-	$stmt->bindParam(':free', $_POST['free'], PDO::PARAM_STR);
+	$stmt = $dbh->prepare('UPDATE `vars` SET `value` = :value WHERE `key` = :key');
+	$stmt->bindParam(':key', $_GET['key'], PDO::PARAM_STR);
+	$stmt->bindParam(':value', $_POST['value'], PDO::PARAM_STR);
 	$stmt->execute();
-	unset($stmt);
-	unset($dbh);
 	$_SESSION['status'] = 'success';
 	header('Location: http://www.bownhs.org/members/');
+	unset($stmt);
+	unset($dbh);
 } catch (Exception $e) {
 	$recipient = "errors@bownhs.org";
 	$subject = "SQL Connection";
-	$mail_body = "An exception occurred on the tutor requester: " . $e->getMessage();
+	$mail_body = "An exception occurred on the variable changer: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
 	die("Feature currently unavailable. Please try again later.");
 }

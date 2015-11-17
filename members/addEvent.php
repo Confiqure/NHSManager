@@ -10,7 +10,7 @@ $account = false;
 require_once('../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
-	$stmt = $dbh->prepare('SELECT role FROM members WHERE token = :token');
+	$stmt = $dbh->prepare('SELECT `role` FROM `members` WHERE `token` = :token');
 	$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
@@ -54,17 +54,17 @@ try {
 	$count = strlen($charset) - 1;
 	$length = 4;
 	while ($length--) $id .= $charset[mt_rand(0, $count)];
-	$stmt = $dbh->prepare("INSERT INTO events VALUES(\"$id\",\"$title\",\"" . $_POST['date'] . "\",\"$color\",\"$icon\",\"$desc\",\"\")");
+	$stmt = $dbh->prepare("INSERT INTO `events` VALUES(\"$id\",\"$title\",\"" . $_POST['date'] . "\",\"$color\",\"$icon\",\"$desc\",\"\")");
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';
 	header('Location: http://www.bownhs.org/members/');
 } catch (Exception $e) {
-	$recipient = "dwheelerw@gmail.com";
-	$subject = "ERROR - SQL Connection";
-	$mail_body = "An exception occurred on the NHS add event page: " . $e->getMessage();
+	$recipient = "errors@bownhs.org";
+	$subject = "SQL Connection";
+	$mail_body = "An exception occurred on the event adder: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
-	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
+	die("Feature currently unavailable. Please try again later.");
 }
 ?>

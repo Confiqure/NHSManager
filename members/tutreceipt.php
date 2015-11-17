@@ -10,14 +10,14 @@ $success = $request = false;
 require_once('../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
-	$stmt = $dbh->prepare('SELECT * FROM members WHERE token = :token');
+	$stmt = $dbh->prepare('SELECT `username` FROM `members` WHERE `token` = :token');
 	$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
 		$success = true;
 		break;
 	}
-	$stmt = $dbh->prepare('SELECT * FROM tutor_req WHERE id = :id');
+	$stmt = $dbh->prepare('SELECT * FROM `tutor_req` WHERE `id` = :id');
 	$stmt->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
@@ -25,7 +25,7 @@ try {
 		break;
 	}
 	if ($success && $request !== false) {
-		$stmt = $dbh->prepare('DELETE FROM tutor_req WHERE id = :id');
+		$stmt = $dbh->prepare('DELETE FROM `tutor_req` WHERE `id` = :id');
 		$stmt->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
 		$stmt->execute();
 		file_put_contents('../stats/tutor_req.txt', file_get_contents('../stats/tutor_req.txt') + 1);
@@ -37,10 +37,10 @@ try {
 	unset($stmt);
 	unset($dbh);
 } catch (Exception $e) {
-	$recipient = "dwheelerw@gmail.com";
-	$subject = "ERROR - SQL Connection";
-	$mail_body = "An exception occurred on the NHS tutor signup page: " . $e->getMessage();
+	$recipient = "errors@bownhs.org";
+	$subject = "SQL Connection";
+	$mail_body = "An exception occurred on the tutoring receipt page: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
-	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
+	die("Feature currently unavailable. Please try again later.");
 }
 ?>

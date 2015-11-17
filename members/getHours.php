@@ -3,7 +3,7 @@ session_start();
 require_once('../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
-	$stmt = $dbh->prepare('SELECT role FROM members WHERE token = :token');
+	$stmt = $dbh->prepare('SELECT `role` FROM `members` WHERE `token` = :token');
 	$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
@@ -16,7 +16,7 @@ try {
 		}
 		break;
 	}
-	$stmt = $dbh->prepare('SELECT studentname,community,tutoring FROM members WHERE role != "Administrator" ORDER BY studentname ASC');
+	$stmt = $dbh->prepare('SELECT `studentname`, `community`, `tutoring` FROM `members` WHERE `role` != "Administrator" ORDER BY `studentname` ASC');
 	$stmt->execute();
 	echo '<center><p>You can use CTRL+A to select all of the data and paste it into an Excel document for further analysis and formatting.</p><table style="border: 1px solid black;" padding="1px" width="40%">';
 	switch ($_GET['filter']) {
@@ -46,10 +46,10 @@ try {
 	unset($stmt);
 	unset($dbh);
 } catch (Exception $e) {
-	$recipient = "dwheelerw@gmail.com";
-	$subject = "ERROR - SQL Connection";
-	$mail_body = "An exception occurred on the NHS service log page: " . $e->getMessage();
+	$recipient = "errors@bownhs.org";
+	$subject = "SQL Connection";
+	$mail_body = "An exception occurred on the hour charter: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
-	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
+	die("Feature currently unavailable. Please try again later.");
 }
 ?>

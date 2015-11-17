@@ -4,7 +4,7 @@ $account = false;
 require_once('../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
-	$stmt = $dbh->prepare('SELECT role FROM members WHERE token = :token');
+	$stmt = $dbh->prepare('SELECT `role` FROM `members` WHERE `token` = :token');
 	$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
@@ -18,7 +18,7 @@ try {
 		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
-	$stmt = $dbh->prepare('INSERT INTO minutes VALUES(:date,:link,:absent)');
+	$stmt = $dbh->prepare('INSERT INTO `minutes` VALUES(:date, :link, :absent)');
 	$stmt->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
 	$stmt->bindParam(':link', $_POST['link'], PDO::PARAM_STR);
 	$stmt->bindParam(':absent', $_POST['absent'], PDO::PARAM_STR);
@@ -28,10 +28,10 @@ try {
 	$_SESSION['status'] = 'success';
 	header('Location: http://www.bownhs.org/members/');
 } catch (Exception $e) {
-	$recipient = "dwheelerw@gmail.com";
-	$subject = "ERROR - SQL Connection";
-	$mail_body = "An exception occurred on the NHS service log page: " . $e->getMessage();
+	$recipient = "errors@bownhs.org";
+	$subject = "SQL Connection";
+	$mail_body = "An exception occurred on the minute uploader: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
-	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
+	die("Feature currently unavailable. Please try again later.");
 }
 ?>

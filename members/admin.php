@@ -1,35 +1,40 @@
 <?php
 session_start();
 $account = false;
-$tutors = $events = $minutes = $pending = array();
+$vars = $tutors = $events = $minutes = $pending = array();
 if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 	require_once('../dbconfig.php');
 	try {
 		$dbh = new PDO($driver, $user, $pass, $attr);
-		$stmt = $dbh->prepare('SELECT * FROM members WHERE token = :token');
+		$stmt = $dbh->prepare('SELECT * FROM `members` WHERE `token` = :token');
 		$stmt->bindParam(':token', $_SESSION['token'], PDO::PARAM_STR);
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$account = $row;
 			break;
 		}
-		$stmt = $dbh->prepare('SELECT id,subjects FROM tutor_req');
+		$stmt = $dbh->prepare('SELECT * FROM `vars`');
+		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			$vars[$row['key']] = $row['value'];
+		}
+		$stmt = $dbh->prepare('SELECT `id`, `subjects` FROM `tutor_req`');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$tutors[sizeof($tutors)] = $row;
 		}
-		$stmt = $dbh->prepare('SELECT * FROM events WHERE date >= "' . date('Y-m-d', time()) . '" ORDER BY date ASC');
+		$stmt = $dbh->prepare('SELECT * FROM `events` WHERE `date` >= "' . date('Y-m-d', time()) . '" ORDER BY `date` ASC');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$events[sizeof($events)] = $row;
 		}
-		$stmt = $dbh->prepare('SELECT * FROM minutes');
+		$stmt = $dbh->prepare('SELECT * FROM `minutes`');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$minutes[sizeof($minutes)] = $row;
 		}
 		if ($account['role'] === "Administrator" || $account['role'] === "Parliamentarian") {
-			$stmt = $dbh->prepare('SELECT username,studentname,pending FROM members WHERE pending != ""');
+			$stmt = $dbh->prepare('SELECT `username`, `studentname`, `pending` FROM `members` WHERE `pending` != ""');
 			$stmt->execute();
 			while ($row = $stmt->fetch()) {
 				$pending[sizeof($pending)] = $row;
@@ -38,11 +43,11 @@ if (isset($_SESSION['token']) && strlen($_SESSION['token']) === 10) {
 		unset($stmt);
 		unset($dbh);
 	} catch (Exception $e) {
-		$recipient = "dwheelerw@gmail.com";
-		$subject = "ERROR - SQL Connection";
-		$mail_body = "An exception occurred on the NHS admin fetcher: " . $e->getMessage();
+		$recipient = "errors@bownhs.org";
+		$subject = "SQL Connection";
+		$mail_body = "An exception occurred on the member page: " . $e->getMessage();
 		mail($recipient, $subject, $mail_body);
-		die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
+		die("Feature currently unavailable. Please try again later.");
 	}
 }
 if ($account === false) {
@@ -201,13 +206,13 @@ if ($account === false) {
 				</a>
 				<ul class="dropdown-menu dropdown-user">
 					<li><a href="changepassword.php"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
-					<li class="divider"></li>
 					<?php
 					if ($account['role'] === 'Administrator' || $account['role'] === 'Parliamentarian') echo '
+					<li class="divider"></li>
 					<li><a href="getHours.php?filter=0"><i class="fa fa-print fa-fw"></i> Full Hours List</a></li>
-					<li><a href="getHours.php?filter=1"><i class="fa fa-print fa-fw"></i> Needed Hours List</a></li>
-					<li class="divider"></li>';
+					<li><a href="getHours.php?filter=1"><i class="fa fa-print fa-fw"></i> Needed Hours List</a></li>';
 					?>
+					<li class="divider"></li>
 					<li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 				</ul>
 				<!-- /.dropdown-user -->
@@ -234,7 +239,7 @@ if ($account === false) {
 						Announcements
 					</div>
 					<div class="panel-footer">
-						Stop by at least once a week for new updates! We know who is and isn't checking in during our virtual meetings.
+						<?php echo $vars['announcement']; ?>
 					</div>
 				</div>
 			</div>

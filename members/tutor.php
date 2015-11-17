@@ -8,7 +8,7 @@ $request = false;
 require_once('../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
-	$stmt = $dbh->prepare('SELECT id,grade,subjects,free FROM tutor_req WHERE id = :id');
+	$stmt = $dbh->prepare('SELECT `id`, `grade`, `subjects`, `free` FROM `tutor_req` WHERE `id` = :id');
 	$stmt->bindParam(':id', $_GET['id'], PDO::PARAM_STR);
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
@@ -18,11 +18,11 @@ try {
 	unset($stmt);
 	unset($dbh);
 } catch (Exception $e) {
-	$recipient = "dwheelerw@gmail.com";
-	$subject = "ERROR - SQL Connection";
-	$mail_body = "An exception occurred on the NHS tutor signup page: " . $e->getMessage();
+	$recipient = "errors@bownhs.org";
+	$subject = "SQL Connection";
+	$mail_body = "An exception occurred on the tutee viewer: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
-	die('<META HTTP-EQUIV="refresh" CONTENT="1" />Feature currently unavailable. This page will refresh in a moment.');
+	die("Feature currently unavailable. Please try again later.");
 }
 ?>
 <!DOCTYPE html>
@@ -65,7 +65,7 @@ try {
 						<h3 class="panel-title">Tutoring Signup Form</h3>
 					</div>
 					<div class="panel-body">
-						<form role="form" action="tutoring_receipt.php" method="POST">
+						<form role="form" action="tutreceipt.php" method="POST">
 							<fieldset>
 								<div class="form-group">
 									<label>Grade Level: <?php echo $request['grade']; ?></label>

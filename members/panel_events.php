@@ -1,6 +1,6 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<i class="fa fa-clock-o fa-fw"></i> Upcoming Events<?php if ($account['role'] !== "Member") echo '&nbsp;&nbsp;&nbsp;(if any info below needs to be changed or removed, please <a href="mailto:dwheelerw@gmail.com">email me</a>)'; ?>
+						<i class="fa fa-calendar fa-fw"></i> Upcoming Events<?php if ($account['role'] !== "Member") echo '&nbsp;&nbsp;&nbsp;(if any info below needs to be changed or removed, please <a href="mailto:dwheelerw@gmail.com">email me</a>)'; ?>
 					</div>
 					<!-- /.panel-heading -->
 					<div class="panel-body">

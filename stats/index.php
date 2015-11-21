@@ -24,6 +24,6 @@ try {
 	mail($recipient, $subject, $mail_body);
 	die("Feature currently unavailable. Please try again later.");
 }
-$lastlog = floor((time() - $lastlog) / 360) / 10 + 7200; //adjust timezones
+$lastlog = floor((time() - $lastlog - 25200) / 360) / 10; //adjust for SQL time zone
 echo "<center><h1>Tutors Matched: " . file_get_contents('tutor_req.txt') . "<br />Tutoring Hours Logged: $tut<br />Community Service Hours Logged: $cs<br />Service Events Logged: $events<br />Service Events Queued: $queue<br />Logins Processed: $logins<br />Last Login: $lastlog hours ago<br />Members: $members</h1></center>";
 ?>

@@ -112,7 +112,7 @@ try {
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<h4 class="tagline">&nbsp;</h4>
+					<h1 class="tagline">&nbsp;</h1>
 				</div>
 			</div>
         <img class="img-responsive img-center" src="images/logo.png" alt="">
@@ -193,6 +193,8 @@ try {
 				</div>
 
 				<div class="col-sm-6">
+
+					<p>&nbsp;</p>
 
 					<p><strong>President:</strong> Hayden Udelson has been an avid member of Bow High School for the past three years and looks forward to finishing with a very productive year. He runs cross country, skis Nordic, and plays tennis.</p>
 
@@ -290,6 +292,24 @@ try {
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+	// Scrolls to the selected menu item on the page
+	$(function() {
+		$('a[href*=#]:not([href=#])').click(function() {
+			if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+				var target = $(this.hash);
+				target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+				if (target.length) {
+					$('html,body').animate({
+						scrollTop: target.offset().top
+					}, 1000);
+					return false;
+				}
+			}
+		});
+	});
+	</script>
 
 </body>
 

@@ -3,7 +3,7 @@ session_start();
 $username = $_POST['username'];
 $password = $_POST['password'];
 $success = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `logins` FROM `members` WHERE `username` = :username AND `password` = :password');
@@ -32,7 +32,7 @@ try {
 } catch (Exception $e) {
 	$recipient = "errors@bownhs.org";
 	$subject = "SQL Connection";
-	$mail_body = "An exception occurred on the login page: " . $e->getMessage();
+	$mail_body = "An exception occurred on the login script: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
 	die("Feature currently unavailable. Please try again later.");
 }

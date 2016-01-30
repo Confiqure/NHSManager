@@ -9,3 +9,9 @@ deny from all
 
 # Prevent directory listings
 Options All -Indexes
+
+Options +FollowSymLinks  
+RewriteEngine On 
+
+RewriteRule ^members/event/(.*)$ ./members/event.php?id=$1 [NC]
+RewriteRule ^members/tutor/(.*)$ ./members/tutor.php?id=$1 [NC]

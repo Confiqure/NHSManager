@@ -1,7 +1,7 @@
 <?php
 session_start();
 $name = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `studentname` FROM `members` WHERE `token` = :token');

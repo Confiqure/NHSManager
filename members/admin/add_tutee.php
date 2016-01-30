@@ -1,7 +1,7 @@
 <?php
 session_start();
 $account = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `role` FROM `members` WHERE `token` = :token');
@@ -36,7 +36,7 @@ try {
 		mail($row['recipient'], 'NHS Alerts', 'Someone needs tutoring in ' . $_POST['subjects'] . '!');
 		$count++;
 	}
-	file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + $count);
+	file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + $count);
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';

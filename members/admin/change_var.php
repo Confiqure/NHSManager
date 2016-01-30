@@ -1,7 +1,7 @@
 <?php
 session_start();
 $account = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `role` FROM `members` WHERE `token` = :token');
@@ -30,7 +30,7 @@ try {
 			mail($row['recipient'], 'NHS Alerts', 'New announcement: ' . $_POST['value']);
 			$count++;
 		}
-		file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + $count);
+		file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + $count);
 	}
 	$_SESSION['status'] = 'success';
 	header('Location: http://www.bownhs.org/members/');

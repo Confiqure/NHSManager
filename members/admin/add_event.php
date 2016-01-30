@@ -7,7 +7,7 @@ if (!checkdate($date[1], $date[2], $date[0])) {
 	return;
 }
 $account = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `role` FROM `members` WHERE `token` = :token');
@@ -63,7 +63,7 @@ try {
 		mail($row['recipient'], 'NHS Alerts', 'A new event (' . $title . ') has been added to the calendar!');
 		$count++;
 	}
-	file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + $count);
+	file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + $count);
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';

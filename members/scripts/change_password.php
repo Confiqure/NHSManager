@@ -4,11 +4,11 @@ $current = $_POST['current'];
 $password1 = $_POST['password'];
 $password2 = $_POST['password2'];
 if ($password1 !== $password2) {
-	header('Location: http://www.bownhs.org/members/changepassword.php?mismatch=true');
+	header('Location: http://www.bownhs.org/members/changepassword/?mismatch=true');
 	return;
 }
 $success = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT * FROM `members` WHERE `token` = :token AND `password` = :password');
@@ -27,7 +27,7 @@ try {
 		$_SESSION['status'] = 'pass_changed';
 		header('Location: http://www.bownhs.org/members/');
 	} else {
-		header('Location: http://www.bownhs.org/members/changepassword.php?failure=true');
+		header('Location: http://www.bownhs.org/members/changepassword/?failure=true');
 	}
 	unset($stmt);
 	unset($dbh);

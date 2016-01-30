@@ -1,4 +1,4 @@
 <?php
 session_start();
-if (isset($_SESSION['token'])) require('admin.php'); else require('login.php');
+if (isset($_SESSION['token'])) require('loadout.php'); else require('login.php');
 ?>

@@ -6,7 +6,7 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
-								<form role="form" action="logHours.php" method="POST">
+								<form role="form" action="scripts/log_hours.php" method="POST">
 									<div class="row">
 										<div class="col-sm-3">
 											<div class="form-group">

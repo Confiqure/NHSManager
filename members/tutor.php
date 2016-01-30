@@ -38,20 +38,20 @@ try {
 
 	<title>National Honor Society</title>
 
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../images/logo144.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../images/logo114.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../images/logo72.png">
-	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="../images/logo57.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../images/logo144.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../../images/logo114.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../../images/logo72.png">
+	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="../../images/logo57.png">
 	<link rel="shortcut icon" href="../images/favicon.png">
 
 	<!-- Bootstrap Core CSS -->
-	<link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- Custom CSS -->
-	<link href="../css/sb-admin-2.css" rel="stylesheet">
+	<link href="../../css/sb-admin-2.css" rel="stylesheet">
 
 	<!-- Custom Fonts -->
-	<link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -65,7 +65,7 @@ try {
 						<h3 class="panel-title">Tutoring Signup Form</h3>
 					</div>
 					<div class="panel-body">
-						<form role="form" action="tutreceipt.php" method="POST">
+						<form role="form" action="../receipt.php" method="POST">
 							<fieldset>
 								<div class="form-group">
 									<label>Grade Level: <?php echo $request['grade']; ?></label>
@@ -90,13 +90,13 @@ try {
 	</div>
 
 	<!-- jQuery -->
-	<script src="../bower_components/jquery/jquery.min.js"></script>
+	<script src="../../bower_components/jquery/jquery.min.js"></script>
 
 	<!-- Bootstrap Core JavaScript -->
-	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 	<!-- Custom Theme JavaScript -->
-	<script src="../js/sb-admin-2.js"></script>
+	<script src="../../js/sb-admin-2.js"></script>
 
 </body>
 

@@ -7,7 +7,7 @@ if (!checkdate($date[1], $date[2], $date[0]) || !is_numeric($_POST['hours'])) {
 	return;
 }
 $account = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `username`, `pending` FROM `members` WHERE `token` = :token');

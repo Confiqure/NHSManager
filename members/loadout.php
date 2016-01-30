@@ -205,13 +205,13 @@ if ($account === false) {
 					<i class="fa fa-user fa-lg fa-fw"></i>  <i class="fa fa-caret-down fa-lg"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">
-					<li><a href="changepassword.php"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
-					<li><a href="notifications.php"><i class="fa fa-bell-o fa-fw"></i> Notifications</a></li>
+					<li><a href="changepassword/"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
+					<li><a href="notifications/"><i class="fa fa-bell-o fa-fw"></i> Notifications</a></li>
 					<?php
 					if ($account['role'] === 'Administrator' || $account['role'] === 'Parliamentarian') echo '
 					<li class="divider"></li>
-					<li><a href="getHours.php?filter=0"><i class="fa fa-print fa-fw"></i> Full Hours List</a></li>
-					<li><a href="getHours.php?filter=1"><i class="fa fa-print fa-fw"></i> Needed Hours List</a></li>';
+					<li><a href="admin/get_hours.php?filter=0"><i class="fa fa-print fa-fw"></i> Full Hours List</a></li>
+					<li><a href="admin/get_hours.php?filter=1"><i class="fa fa-print fa-fw"></i> Needed Hours List</a></li>';
 					?>
 					<li class="divider"></li>
 					<li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
@@ -279,7 +279,7 @@ if ($account === false) {
 
 		<div class="row">
 			<div class="col-lg-9">
-<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panel_record.php'); else include('panel_events.php');?>
+<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panels/record.php'); else include('panels/events.php');?>
 			</div>
 			<!-- /.col-lg-8 -->
 			<div class="col-lg-3">
@@ -296,7 +296,7 @@ if ($account === false) {
 						for ($i = sizeof($tutors) - 1; $i >= 0; $i--) {
 							if ($tutors[$i] == null) continue;
 							echo '
-							<a href="tutor.php?id=' . $tutors[$i]['id'] . '" class="list-group-item">
+							<a href="tutor/' . $tutors[$i]['id'] . '" class="list-group-item">
 								' . (strlen($tutors[$i]['subjects']) > 30 ? substr($tutors[$i]['subjects'], 0, 30) . '...' : $tutors[$i]['subjects']) . '
 							</a>' . "\n";
 						}
@@ -350,13 +350,13 @@ if ($account === false) {
 		<?php if ($account['role'] !== 'Member') { echo'
 		<section id="admin">
 			<div class="row">
-				<div class="col-lg-12">'; include('panel_admin.php'); echo '</div>
+				<div class="col-lg-12">'; include('panels/admin.php'); echo '</div>
 			</div>
 			<!-- /.row -->
 		</section>'; } ?>
 		<div class="row">
 			<div class="col-lg-12">
-<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panel_events.php'); else include('panel_record.php'); ?>
+<?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panels/events.php'); else include('panels/record.php'); ?>
 			</div>
 		</div>
 	</div>

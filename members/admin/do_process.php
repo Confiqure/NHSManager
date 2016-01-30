@@ -1,7 +1,7 @@
 <?php
 session_start();
 $auth = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `role` FROM `members` WHERE `token` = :token');
@@ -38,7 +38,7 @@ try {
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			mail($row['recipient'], 'NHS Alerts', 'Your service hours have been checked by the Parliamentarian!');
-			file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + 1);
+			file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + 1);
 			break;
 		}
 		$_SESSION['status'] = 'processed';

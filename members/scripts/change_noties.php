@@ -7,7 +7,7 @@ if (strlen($email) > 0 && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 	return;
 }
 $user = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `username` FROM `members` WHERE `token` = :token');

@@ -38,7 +38,7 @@
 						<h3 class="panel-title">Please Sign In<?php if ($_GET['username'] != false) echo '&nbsp;<small style="color:red">(try again)</small>';?></h3>
 					</div>
 					<div class="panel-body">
-						<form role="form" action="dologin.php" method="POST">
+						<form role="form" action="scripts/do_login.php" method="POST">
 							<fieldset>
 								<div class="form-group">
 									<input class="form-control" placeholder="Username" name="username" type="text" maxlength=15 <?php if ($_GET['username'] != false) echo 'value="' . $_GET['username'] . '"'; else echo 'autofocus';?>  required />

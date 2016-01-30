@@ -1,7 +1,7 @@
 <?php
 session_start();
 $account = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `role` FROM `members` WHERE `token` = :token');
@@ -30,7 +30,7 @@ try {
 		mail($row['recipient'], 'NHS Alerts', 'The minutes for ' . $_POST['date'] . ' have been posted!');
 		$count++;
 	}
-	file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + $count);
+	file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + $count);
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';
@@ -38,7 +38,7 @@ try {
 } catch (Exception $e) {
 	$recipient = "errors@bownhs.org";
 	$subject = "SQL Connection";
-	$mail_body = "An exception occurred on the minute uploader: " . $e->getMessage();
+	$mail_body = "An exception occurred on the minutes uploader: " . $e->getMessage();
 	mail($recipient, $subject, $mail_body);
 	die("Feature currently unavailable. Please try again later.");
 }

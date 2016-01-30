@@ -5,7 +5,7 @@ header('Location: http://www.bownhs.org/');
 exit();
 }
 $user = $eSettings = $pSettings = false;
-require_once('../dbconfig.php');
+require_once('../../dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
 	$stmt = $dbh->prepare('SELECT `username` FROM `members` WHERE `token` = :token');
@@ -58,20 +58,20 @@ try {
 
 	<title>National Honor Society</title>
 
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../images/logo144.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../images/logo114.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../images/logo72.png">
-	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="../images/logo57.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../images/logo144.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../../images/logo114.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../../images/logo72.png">
+	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="../../images/logo57.png">
 	<link rel="shortcut icon" href="../images/favicon.png">
 
 	<!-- Bootstrap Core CSS -->
-	<link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- Custom CSS -->
-	<link href="../css/sb-admin-2.css" rel="stylesheet">
+	<link href="../../css/sb-admin-2.css" rel="stylesheet">
 
 	<!-- Custom Fonts -->
-	<link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -85,7 +85,7 @@ try {
 						<h3 class="panel-title"><i class="fa fa-bell fa fw"></i> Notification Settings</h3>
 					</div>
 					<div class="panel-body">
-						<form role="form" action="changenotis.php" method="POST">
+						<form role="form" action="../scripts/change_noties.php" method="POST">
 							<!-- Nav tabs -->
 							<ul class="nav nav-tabs">
 								<li class="active"><a href="#email" data-toggle="tab">Email Notifications</a></li>
@@ -201,7 +201,7 @@ try {
 	</div>
 
 	<!-- jQuery -->
-	<script src="../bower_components/jquery/jquery.min.js"></script>
+	<script src="../../bower_components/jquery/jquery.min.js"></script>
 
 	<script type="text/javascript">
 		$('#enableEmail').change(function() {
@@ -245,10 +245,10 @@ try {
 	</script>
 
 	<!-- Bootstrap Core JavaScript -->
-	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 	<!-- Custom Theme JavaScript -->
-	<script src="../js/sb-admin-2.js"></script>
+	<script src="../../js/sb-admin-2.js"></script>
 
 </body>
 

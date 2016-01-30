@@ -18,7 +18,7 @@
 							<div class="tab-content">
 								<div class="tab-pane fade<?php if ($account['role'] !== 'Administrator' && $account['role'] !== 'Parliamentarian' && $account['role'] !== 'Secretary') echo ' in active';?>" id="event">
 									<h3>Add an event</h3>
-									<form role="form" action="addEvent.php" method="POST">
+									<form role="form" action="admin/add_event.php" method="POST">
 										<div class="row">
 											<div class="col-sm-3">
 												<div class="form-group">
@@ -59,7 +59,7 @@
 								</div>
 								<div class="tab-pane fade" id="tutor">
 									<h3>Request a tutor</h3>
-									<form role="form" action="addTutee.php" method="POST">
+									<form role="form" action="admin/add_tutee.php" method="POST">
 										<div class="row">
 											<div class="col-sm-4">
 												<div class="form-group">
@@ -135,7 +135,7 @@
 													<td style="vertical-align:middle"><center>' . $components[2] . '</center></td>
 													<td>' . $desc . '</td>
 													<td style="vertical-align:middle"><center>' . $contact . '</center></td>
-													<td style="vertical-align:middle"><center><a href="process.php?username=' . $pending[$i][0] . '&count=' . $count . '&state=true"><i class="fa fa-check fa-fw"></i></a>&nbsp;&nbsp;&nbsp;<a href="process.php?username=' . $pending[$i][0] . '&count=' . $count . '&state=false"><i class="fa fa-times fa-fw"></i></a></center></td>
+													<td style="vertical-align:middle"><center><a href="admin/do_process.php?username=' . $pending[$i][0] . '&count=' . $count . '&state=true"><i class="fa fa-check fa-fw"></i></a>&nbsp;&nbsp;&nbsp;<a href="admin/do_process.php?username=' . $pending[$i][0] . '&count=' . $count . '&state=false"><i class="fa fa-times fa-fw"></i></a></center></td>
 												</tr>' . "\n";
 																	$count++;
 																}
@@ -149,7 +149,7 @@
 									if ($account['role'] === "Administrator" || $account['role'] === "Secretary") { echo '
 								<div class="tab-pane fade' . ($account['role'] === 'Secretary' ? ' in active' : '') . '" id="minutes">
 									<h3>Upload meeting minutes</h3>
-									<form role="form" action="addMinutes.php" method="POST">
+									<form role="form" action="admin/add_minutes.php" method="POST">
 										<div class="row">
 											<div class="col-sm-3">
 												<div class="form-group">
@@ -175,7 +175,7 @@
 									if ($account['role'] === "Administrator") { echo '
 								<div class="tab-pane fade in active" id="settings">
 									<h3>Admin</h3>
-									<form role="form" action="changeVar.php?key=announcement" method="POST">
+									<form role="form" action="admin/change_var.php?key=announcement" method="POST">
 										<label>Update the announcement</label>
 										<div class="row">
 											<div class="col-sm-10">
@@ -188,7 +188,7 @@
 											</div>
 										</div>
 									</form>
-									<form role="form" action="changeVar.php?key=mention" method="POST">
+									<form role="form" action="admin/change_var.php?key=mention" method="POST">
 										<div class="form-group">
 											<label>Honorable Mention</label>
 											<textarea class="form-control" name="value" rows="5" maxlength="1024" placeholder="Talk about who it is that deserves an Honorable Mention on the home page! What you type here is exactly what appears on the home screen." required></textarea>

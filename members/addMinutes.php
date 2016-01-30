@@ -23,6 +23,14 @@ try {
 	$stmt->bindParam(':link', $_POST['link'], PDO::PARAM_STR);
 	$stmt->bindParam(':absent', $_POST['absent'], PDO::PARAM_STR);
 	$stmt->execute();
+	$stmt = $dbh->prepare('SELECT * FROM `notification_email` WHERE `newMinutes` = 1');
+	$stmt->execute();
+	$count = 0;
+	while ($row = $stmt->fetch()) {
+		mail($row['recipient'], 'NHS Alerts', 'The minutes for ' . $_POST['date'] . ' have been posted!');
+		$count++;
+	}
+	file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + $count);
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';

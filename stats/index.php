@@ -1,5 +1,5 @@
 <?php
-$tut = $cs = $events = $queue = $logins = $lastlog = $members = 0;
+$tut = $cs = $events = $queue = $logins = $lastlog = $members = $noties = 0;
 session_start();
 require_once('../dbconfig.php');
 try {
@@ -15,6 +15,16 @@ try {
 		$logins += $row['logins'];
 		$members++;
 	}
+	$stmt = $dbh->prepare('SELECT * FROM `notification_email`');
+	$stmt->execute();
+	while ($row = $stmt->fetch()) {
+		$noties++;
+	}
+	$stmt = $dbh->prepare('SELECT * FROM `notification_phone`');
+	$stmt->execute();
+	while ($row = $stmt->fetch()) {
+		$noties++;
+	}
 	unset($stmt);
 	unset($dbh);
 } catch (Exception $e) {
@@ -25,5 +35,5 @@ try {
 	die("Feature currently unavailable. Please try again later.");
 }
 $lastlog = floor((time() - $lastlog - 25200) / 360) / 10; //adjust for SQL time zone
-echo "<center><h1>Tutors Matched: " . file_get_contents('tutor_req.txt') . "<br />Tutoring Hours Logged: $tut<br />Community Service Hours Logged: $cs<br />Service Events Logged: $events<br />Service Events Queued: $queue<br />Logins Processed: $logins<br />Last Login: $lastlog hours ago<br />Members: $members</h1></center>";
+echo "<center><h1>Tutors Matched: " . file_get_contents('tutor_req.txt') . "<br />Tutoring Hours Logged: $tut</h1><h1>Community Service Hours Logged: $cs<br />Service Events Logged: $events<br />Service Events Queued: $queue</h1><h1>Logins Processed: $logins<br />Last Login: $lastlog hours ago</h1><h1>Members: $members</h1><h1>Notification Opted-In: $noties<br />Notifications Sent: " . file_get_contents('emails_sent.txt') . "</h1></center>";
 ?>

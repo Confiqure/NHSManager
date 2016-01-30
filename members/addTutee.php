@@ -29,6 +29,14 @@ try {
 	$stmt->bindParam(':subjects', $_POST['subjects'], PDO::PARAM_STR);
 	$stmt->bindParam(':free', $_POST['free'], PDO::PARAM_STR);
 	$stmt->execute();
+	$stmt = $dbh->prepare('SELECT * FROM `notification_email` WHERE `newTutoring` = 1');
+	$stmt->execute();
+	$count = 0;
+	while ($row = $stmt->fetch()) {
+		mail($row['recipient'], 'NHS Alerts', 'Someone needs tutoring in ' . $_POST['subjects'] . '!');
+		$count++;
+	}
+	file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + $count);
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';

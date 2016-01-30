@@ -18,8 +18,8 @@ try {
 		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
-	$stmt = $dbh->prepare('SELECT `going` FROM `events` WHERE `title` = :title');
-	$stmt->bindParam(':title', $_GET['title'], PDO::PARAM_STR);
+	$stmt = $dbh->prepare('SELECT `going` FROM `events` WHERE `id` = :id');
+	$stmt->bindParam(':id', $_GET['id'], PDO::PARAM_STR);
 	$stmt->execute();
 	$going = false;
 	while ($row = $stmt->fetch()) {
@@ -33,9 +33,9 @@ try {
 		header('Location: http://www.bownhs.org/members/');
 		return;
 	}
-	$stmt = $dbh->prepare('UPDATE `events` SET `going` = :going WHERE `title` = :title');
+	$stmt = $dbh->prepare('UPDATE `events` SET `going` = :going WHERE `id` = :id');
 	$stmt->bindParam(':going', $going = $_GET['going'] == '1' ? $going . $name . ', ' : str_replace($name . ', ', '', $going), PDO::PARAM_STR);
-	$stmt->bindParam(':title', $_GET['title'], PDO::PARAM_STR);
+	$stmt->bindParam(':id', $_GET['id'], PDO::PARAM_STR);
 	$stmt->execute();
 	unset($stmt);
 	unset($dbh);

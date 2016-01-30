@@ -32,7 +32,7 @@ try {
 	$contact = str_replace(',', '/[c]/', $contact);
 	$contact = str_replace(';', '/[s]/', $contact);
 	$contact = str_replace('"', '/[q]/', $contact);
-	$new = $date[1] . '/' . $date[2] . '/' . $date[0] . ',' . ($_POST['service'] === 'Tutoring' ? 'tutoring' : 'community') . ',' . $_POST['hours'] . ',' . $desc . ',' . $contact . ';';
+	$new = $date[1] . '/' . $date[2] . '/' . $date[0] . ',' . (strpos($_POST['service'], 'utor') !== false ? 'tutoring' : 'community') . ',' . $_POST['hours'] . ',' . $desc . ',' . $contact . ';';
 	$stmt = $dbh->prepare('UPDATE `members` SET `pending` = "' .  $new . $account['pending'] . '" WHERE `username` = "' . $account['username'] . '"');
 	$stmt->execute();
 	unset($stmt);

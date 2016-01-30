@@ -6,6 +6,7 @@ $max_community = $total_community = 0;
 $account_tutoring = false;
 $max_tutoring = $total_tutoring = 0;
 $events = 10;
+$mention = "";
 require_once('dbconfig.php');
 try {
 	$dbh = new PDO($driver, $user, $pass, $attr);
@@ -32,6 +33,12 @@ try {
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$events++;
+		}
+		$stmt = $dbh->prepare('SELECT `value` FROM `vars` WHERE `key` = "mention"');
+		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			$mention = $row['value'];
+			break;
 		}
 		unset($stmt);
 		unset($dbh);
@@ -186,7 +193,7 @@ try {
 
 					<h2>Chapter Members</h2>
 
-					<p>The Bow High School Chapter of the National Honor Society is filled with brilliant young minds looking to make a difference in their school. The school's members come from the junior and senior classes and represent the best BHS has to offer.</p>
+					<p>The Bow High School Chapter of the National Honor Society is filled with brilliant young minds looking to make a difference in their school. The school&#39;s members come from the junior and senior classes and represent the best BHS has to offer.</p>
 					<p>The senior members this year are: Madison Beauchain, Shannon Benson, Madeleine Cheney, Anthony Dal Pos, Casey Day, Jillian DeLand, John Graham, Margaret Jensen, Brooke Johnson, Hadley Johnson, Robert Joscelyn, Kaitlynn Leary, Samantha MacEachron, Justin McCully, Claire Murray, Ryan Murray, Michelle Neal, Alina Pinney, Aditya Shah, Samrawit Silva, Kaythi Tu, Evan Vulgamore, Katrina Wells, Shane Wunderli, and Laura Zbehlik.</p>
 					<p>The inductees this year are: Austin Beaudette, Kristen Benson, Duke Biehl, Sullivan Blair, Anthony Celenza, Lucas Cohen, Mason Elle-Gelernter, Sebastian Grasso, Riley Hicks, Abigail Horner, Paige Johnson, Nandita Kasireddy, Rebecca Katz, Olivia Krause, Conner Lorenz, Hallie Lothrop, Joseph Lulka, Emily Montebianchi, Michael Mullen, Claire Mulvaney, Samuel Neff, Bryce Northrop, Brandon Parker, Elizabeth Pizzi, Isabella Urbina, Jack Vachon, Sadie Warburton, Elin Warwick, Brendan Winch, and Elysia Woody.</p>
 
@@ -208,7 +215,7 @@ try {
 
 					<p><strong>Webmaster:</strong> Dylan Wheeler has been programming for six years, two of which have been for web development. As a senior, he plays football and runs track. He intends to go to college to pursue computer science and business.</p>
 
-					<p><strong>Historian:</strong> Amanda Murray plays soccer, basketball, and lacrosse and can always be bribed with cookie dough. She can't wait for another great year on the National Honor Society!</p>
+					<p><strong>Historian:</strong> Amanda Murray plays soccer, basketball, and lacrosse and can always be bribed with cookie dough. She can&#39;t wait for another great year on the National Honor Society!</p>
 
 				</div>
 
@@ -224,13 +231,21 @@ try {
 					<h2>Noteworthy Members</h2>
 					<div class="row">
 						<div class="col-sm-4">
-							<p><?php echo '<strong>' . $account_combined['studentname'] . '</strong> has been proven a noteworthy member of the Society by amassing a total of <strong>' . $max_combined . '</strong> hours of tutoring and community service! This is the highest combined total of any of our members. Congratulations!';?></p>
+							<p><?php echo '<strong>' . $account_combined['studentname'] . '</strong> has been proven the most dedicated member of the Society by amassing a total of <strong>' . floor($max_combined) . '</strong> hours of tutoring and community service, the highest combined total of any of our members! Congratulations!'; ?></p>
 						</div>
 						<div class="col-sm-4">
-							<p><?php echo '<strong>' . $account_community['studentname'] . '</strong> has given back to the community by volunteering through the Society earning <strong>' . (floor($max_community) == $max_community ? substr($max_community, 0, strlen($max_community) - 2) : $max_community) . '</strong> hours! This is the most community service done by any of our members. Awesome job!';?></p>
+							<p><?php echo '<strong>' . $account_community['studentname'] . '</strong> has given back to the community by volunteering through the Society earning <strong>' . floor($max_community) . '</strong> hours! This is the most community service done by any of our members. Awesome job!'; ?></p>
 						</div>
 						<div class="col-sm-4">
-							<p><?php echo '<strong>' . $account_tutoring['studentname'] . '</strong> has earned the title of Most Tutoring Completed by donating <strong>' . (floor($max_tutoring) == $max_tutoring ? substr($max_tutoring, 0, strlen($max_tutoring) - 2) : $max_tutoring) . '</strong> hours toward benefiting the education of fellow peers! You stand out among fellow Society members for your altruism. Well done!';?></p>
+							<p><?php echo '<strong>' . $account_tutoring['studentname'] . '</strong> has earned the title of Most Tutoring Completed by donating <strong>' . floor($max_tutoring) . '</strong> hours toward benefiting the education of fellow peers! You stand out among fellow Society members for your altruism. Well done!'; ?></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<h2>Honorable Mention <small>courtesy of the NHS advisors:</small></h2>
+					<div class="row">
+						<div class="col-sm-12">
+							<p>"<?php echo $mention; ?>"</p>
 						</div>
 					</div>
 				</div>
@@ -244,7 +259,7 @@ try {
 			<div class="row">
 				<div class="col-md-6">
 					<h2>Volunteering</h2>
-					<p>If you have any requests for volunteering hands, email one of the Chapter's advisors. Contact information is provided <a href="#about">above</a>.</p>
+					<p>If you have any requests for volunteering hands, email one of the Chapter&#39;s advisors. Contact information is provided <a href="#about">above</a>.</p>
 				</div>
 				<div class="col-md-6">
 					<h2>Tutoring</h2>

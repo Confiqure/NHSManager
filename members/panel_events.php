@@ -26,7 +26,7 @@
 										<div class="timeline-body">
 											<p>' . $events[$i]['description'] . '</p>
 											<hr />
-											<a type="button" class="btn btn-' . ($going ? 'danger' : 'success') . ' btn-sm" href="updateEvent.php?title=' . $events[$i]['title'] . '&going=' . !$going . '">
+											<a type="button" class="btn btn-' . ($going ? 'danger' : 'success') . ' btn-sm" href="updateEvent.php?id=' . $events[$i]['id'] . '&going=' . !$going . '">
 												' . ($going ? 'Remove your name' : 'Sign up') . '
 											</a>
 											<a type="button" class="btn btn-info btn-sm" href="event.php?id=' . $events[$i]['id'] . '">

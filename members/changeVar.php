@@ -22,6 +22,16 @@ try {
 	$stmt->bindParam(':key', $_GET['key'], PDO::PARAM_STR);
 	$stmt->bindParam(':value', $_POST['value'], PDO::PARAM_STR);
 	$stmt->execute();
+	if ($_GET['key'] == 'announcement') {
+		$stmt = $dbh->prepare('SELECT * FROM `notification_email` WHERE `newAnnouncement` = 1');
+		$stmt->execute();
+		$count = 0;
+		while ($row = $stmt->fetch()) {
+			mail($row['recipient'], 'NHS Alerts', 'New announcement: ' . $_POST['value']);
+			$count++;
+		}
+		file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + $count);
+	}
 	$_SESSION['status'] = 'success';
 	header('Location: http://www.bownhs.org/members/');
 	unset($stmt);

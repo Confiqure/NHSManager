@@ -206,6 +206,7 @@ if ($account === false) {
 				</a>
 				<ul class="dropdown-menu dropdown-user">
 					<li><a href="changepassword.php"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
+					<li><a href="notifications.php"><i class="fa fa-bell-o fa-fw"></i> Notifications</a></li>
 					<?php
 					if ($account['role'] === 'Administrator' || $account['role'] === 'Parliamentarian') echo '
 					<li class="divider"></li>
@@ -251,7 +252,7 @@ if ($account === false) {
 								<i class="fa fa-heart fa-5x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
-								<div class="huge"><?php if ($account['role'] != "Administrator") echo floor($account['community']) == $account['community'] ? substr($account['community'], 0, strlen($account['community']) - 2) : $account['community']; else echo "NA"; ?></div>
+								<div class="huge"><?php $account['community'] = floor($account['community']); if ($account['role'] != "Administrator") echo $account['community']; else echo "NA"; ?></div>
 								<div>Community Service</div>
 							</div>
 						</div>
@@ -266,7 +267,7 @@ if ($account === false) {
 								<i class="fa fa-book fa-5x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
-								<div class="huge"><?php if ($account['role'] != "Administrator") echo floor($account['tutoring']) == $account['tutoring'] ? substr($account['tutoring'], 0, strlen($account['tutoring']) - 2) : $account['tutoring']; else echo "NA"; ?></div>
+								<div class="huge"><?php $account['tutoring'] = floor($account['tutoring']); if ($account['role'] != "Administrator") echo $account['tutoring']; else echo "NA"; ?></div>
 								<div>Tutoring</div>
 							</div>
 						</div>
@@ -347,10 +348,12 @@ if ($account === false) {
 		</div>
 		<!-- /.row -->
 		<?php if ($account['role'] !== 'Member') { echo'
-		<div class="row">
-			<div class="col-lg-12">'; include('panel_admin.php'); echo '</div>
-		</div>
-		<!-- /.row -->'; } ?>
+		<section id="admin">
+			<div class="row">
+				<div class="col-lg-12">'; include('panel_admin.php'); echo '</div>
+			</div>
+			<!-- /.row -->
+		</section>'; } ?>
 		<div class="row">
 			<div class="col-lg-12">
 <?php if ($total_percent != 100 && $account['role'] !== 'Administrator') include('panel_events.php'); else include('panel_record.php'); ?>

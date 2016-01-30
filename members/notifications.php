@@ -89,7 +89,7 @@ try {
 							<!-- Nav tabs -->
 							<ul class="nav nav-tabs">
 								<li class="active"><a href="#email" data-toggle="tab">Email Notifications</a></li>
-								<li><a href="#phone" data-toggle="tab">Text Notifications</a></li>
+								<li><a href="#phone" data-toggle="tab">Text Notifications (coming soon)</a></li>
 							</ul>
 							<!-- Tab panes -->
 							<div class="tab-content">
@@ -115,11 +115,6 @@ try {
 												<label>Manage Subscriptions</label>
 												<br />
 												<span>
-													<input id="eEventReminder" name="eEventReminder" type="checkbox"<?php if ($eSettings !== false) { if ($eSettings['eventReminder'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
-													Reminder 1 day before the start of an event you signed up for
-												</span>
-												<br />
-												<span>
 													<input id="eNewAnnouncement" name="eNewAnnouncement" type="checkbox"<?php if ($eSettings !== false) { if ($eSettings['newAnnouncement'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
 													When a new announcement is posted
 												</span>
@@ -130,17 +125,17 @@ try {
 												</span>
 												<br />
 												<span>
-													<input id="eNewEvents" name="eNewEvents" type="checkbox"<?php if ($eSettings !== false) { if ($eSettings['newEvents'] == true) echo ' checked'; } else echo ' disabled'; ?> />
+													<input id="eNewEvents" name="eNewEvents" type="checkbox"<?php if ($eSettings !== false) { if ($eSettings['newEvents'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
 													When new events are posted
 												</span>
 												<br />
 												<span>
-													<input id="eNewMinutes" name="eNewMinutes" type="checkbox"<?php if ($eSettings !== false) { if ($eSettings['newMinutes'] == true) echo ' checked'; } else echo 'disabled'; ?> />
+													<input id="eNewMinutes" name="eNewMinutes" type="checkbox"<?php if ($eSettings !== false) { if ($eSettings['newMinutes'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
 													When new meeting minutes are posted
 												</span>
 												<br />
 												<span>
-													<input id="eNewApproval" name="eNewApproval" type="checkbox"<?php if ($eSettings !== false) { if ($eSettings['newApproval'] == true) echo ' checked'; } else echo 'disabled'; ?> />
+													<input id="eNewApproval" name="eNewApproval" type="checkbox"<?php if ($eSettings !== false) { if ($eSettings['newApproval'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
 													When your hours are approved
 												</span>
 											</div>
@@ -169,11 +164,6 @@ try {
 												<label>Manage Subscriptions</label>
 												<br />
 												<span>
-													<input id="pEventReminder" name="pEventReminder" type="checkbox"<?php if ($pSettings !== false) { if ($pSettings['eventReminder'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
-													Reminder 1 day before the start of an event you signed up for
-												</span>
-												<br />
-												<span>
 													<input id="pNewAnnouncement" name="pNewAnnouncement" type="checkbox"<?php if ($pSettings !== false) { if ($pSettings['newAnnouncement'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
 													When a new announcement is posted
 												</span>
@@ -184,17 +174,17 @@ try {
 												</span>
 												<br />
 												<span>
-													<input id="pNewEvents" name="pNewEvents" type="checkbox"<?php if ($pSettings !== false) { if ($pSettings['newEvents'] == true) echo ' checked'; } else echo 'disabled'; ?> />
+													<input id="pNewEvents" name="pNewEvents" type="checkbox"<?php if ($pSettings !== false) { if ($pSettings['newEvents'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
 													When new events are posted
 												</span>
 												<br />
 												<span>
-													<input id="pNewMinutes" name="pNewMinutes" type="checkbox"<?php if ($pSettings !== false) { if ($pSettings['newMinutes'] == true) echo ' checked'; } else echo 'disabled'; ?> />
+													<input id="pNewMinutes" name="pNewMinutes" type="checkbox"<?php if ($pSettings !== false) { if ($pSettings['newMinutes'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
 													When new meeting minutes are posted
 												</span>
 												<br />
 												<span>
-													<input id="pNewApproval" name="pNewApproval" type="checkbox"<?php if ($pSettings !== false) { if ($pSettings['newApproval'] == true) echo ' checked'; } else echo 'disabled'; ?> />
+													<input id="pNewApproval" name="pNewApproval" type="checkbox"<?php if ($pSettings !== false) { if ($pSettings['newApproval'] == true) echo ' checked'; } else echo ' checked disabled'; ?> />
 													When your hours are approved
 												</span>
 											</div>

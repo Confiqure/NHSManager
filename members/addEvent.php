@@ -56,6 +56,14 @@ try {
 	while ($length--) $id .= $charset[mt_rand(0, $count)];
 	$stmt = $dbh->prepare("INSERT INTO `events` VALUES(\"$id\",\"$title\",\"" . $_POST['date'] . "\",\"$color\",\"$icon\",\"$desc\",\"\")");
 	$stmt->execute();
+	$stmt = $dbh->prepare('SELECT * FROM `notification_email` WHERE `newEvents` = 1');
+	$stmt->execute();
+	$count = 0;
+	while ($row = $stmt->fetch()) {
+		mail($row['recipient'], 'NHS Alerts', 'A new event (' . $title . ') has been added to the calendar!');
+		$count++;
+	}
+	file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + $count);
 	unset($stmt);
 	unset($dbh);
 	$_SESSION['status'] = 'success';

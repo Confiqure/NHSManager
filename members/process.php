@@ -33,13 +33,21 @@ try {
 		$stmt = $dbh->prepare('UPDATE `members` SET `tutoring` = "' . $account['tutoring'] . '", `community` = "' . $account['community'] . '", `processed` = "' . $account['processed'] . '", `pending` = "' . $account['pending'] . '" WHERE `username` = :username');
 		$stmt->bindParam(':username', $_GET['username'], PDO::PARAM_INT);
 		$stmt->execute();
+		$stmt = $dbh->prepare('SELECT * FROM `notification_email` WHERE `username` = :username AND `newApproval` = 1');
+		$stmt->bindParam(':username', $_GET['username'], PDO::PARAM_INT);
+		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			mail($row['recipient'], 'NHS Alerts', 'Your service hours have been checked by the Parliamentarian!');
+			file_put_contents('../stats/emails_sent.txt', file_get_contents('../stats/emails_sent.txt') + 1);
+			break;
+		}
 		$_SESSION['status'] = 'processed';
 	} else {
 		$_SESSION['status'] = 'error';
 	}
 	unset($stmt);
 	unset($dbh);
-	header("Location: http://www.bownhs.org/members/");
+	header("Location: http://www.bownhs.org/members/#admin");
 } catch (Exception $e) {
 	$recipient = "errors@bownhs.org";
 	$subject = "SQL Connection";

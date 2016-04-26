@@ -1,11 +1,5 @@
 <?php
 session_start();
-$email = $_POST['email'];
-if (strlen($email) > 0 && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-	$_SESSION['status'] = 'error';
-	header('Location: http://www.bownhs.org/members/');
-	return;
-}
 $user = false;
 require_once('../../dbconfig.php');
 try {
@@ -30,16 +24,14 @@ try {
 	$stmt->bindParam(':username', $user, PDO::PARAM_STR);
 	$stmt->execute();
 	if ($_POST['enableEmail'] == 'on') {
-		$_POST['eEventReminder'] = $_POST['eEventReminder'] == 'on' ? 1 : 0;
 		$_POST['eNewAnnouncement'] = $_POST['eNewAnnouncement'] == 'on' ? 1 : 0;
 		$_POST['eNewTutoring'] = $_POST['eNewTutoring'] == 'on' ? 1 : 0;
 		$_POST['eNewEvents'] = $_POST['eNewEvents'] == 'on' ? 1 : 0;
 		$_POST['eNewMinutes'] = $_POST['eNewMinutes'] == 'on' ? 1 : 0;
 		$_POST['eNewApproval'] = $_POST['eNewApproval'] == 'on' ? 1 : 0;
-		$stmt = $dbh->prepare('INSERT INTO `notification_email`(`username`, `recipient`, `eventReminder`, `newAnnouncement`, `newTutoring`, `newEvents`, `newMinutes`, `newApproval`) VALUES (:username, :recipient, :eventReminder, :newAnnouncement, :newTutoring, :newEvents, :newMinutes, :newApproval)');
+		$stmt = $dbh->prepare('INSERT INTO `notification_email`(`username`, `recipient`, `newAnnouncement`, `newTutoring`, `newEvents`, `newMinutes`, `newApproval`) VALUES (:username, :recipient, :newAnnouncement, :newTutoring, :newEvents, :newMinutes, :newApproval)');
 		$stmt->bindParam(':username', $user, PDO::PARAM_STR);
 		$stmt->bindParam(':recipient', $_POST['eRecipient'], PDO::PARAM_STR);
-		$stmt->bindParam(':eventReminder', $_POST['eEventReminder'], PDO::PARAM_INT);
 		$stmt->bindParam(':newAnnouncement', $_POST['eNewAnnouncement'], PDO::PARAM_INT);
 		$stmt->bindParam(':newTutoring', $_POST['eNewTutoring'], PDO::PARAM_INT);
 		$stmt->bindParam(':newEvents', $_POST['eNewEvents'], PDO::PARAM_INT);
@@ -47,17 +39,36 @@ try {
 		$stmt->bindParam(':newApproval', $_POST['eNewApproval'], PDO::PARAM_INT);
 		$stmt->execute();
 	}
-	if ($_POST['enablePhone'] == 'on') {
-		$_POST['pEventReminder'] = $_POST['pEventReminder'] == 'on' ? 1 : 0;
+	if ($_POST['enablePhone'] == 'on' && strlen($_POST['pRecipient']) === 10) {
+		$recipient = $_POST['pRecipient'];
+		switch ($_POST['pCarrier']) {
+			case 'AT&T':
+				$recipient .= '@txt.att.net';
+				break;
+			case 'Sprint':
+				$recipient .= '@messaging.sprintpcs.com';
+				break;
+			case 'T-Mobile':
+				$recipient .= '@tmomail.net';
+				break;
+			case 'US Cellular':
+				$recipient .= '@email.uscc.net';
+				break;
+			case 'Verizon':
+				$recipient .= '@vtext.com';
+				break;
+			case 'Virgin Mobile':
+				$recipient .= '@vmobl.com';
+				break;
+		}
 		$_POST['pNewAnnouncement'] = $_POST['pNewAnnouncement'] == 'on' ? 1 : 0;
 		$_POST['pNewTutoring'] = $_POST['pNewTutoring'] == 'on' ? 1 : 0;
 		$_POST['pNewEvents'] = $_POST['pNewEvents'] == 'on' ? 1 : 0;
 		$_POST['pNewMinutes'] = $_POST['pNewMinutes'] == 'on' ? 1 : 0;
 		$_POST['pNewApproval'] = $_POST['pNewApproval'] == 'on' ? 1 : 0;
-		$stmt = $dbh->prepare('INSERT INTO `notification_phone`(`username`, `recipient`, `eventReminder`, `newAnnouncement`, `newTutoring`, `newEvents`, `newMinutes`, `newApproval`) VALUES (:username, :recipient, :eventReminder, :newAnnouncement, :newTutoring, :newEvents, :newMinutes, :newApproval)');
+		$stmt = $dbh->prepare('INSERT INTO `notification_phone`(`username`, `recipient`, `newAnnouncement`, `newTutoring`, `newEvents`, `newMinutes`, `newApproval`) VALUES (:username, :recipient, :newAnnouncement, :newTutoring, :newEvents, :newMinutes, :newApproval)');
 		$stmt->bindParam(':username', $user, PDO::PARAM_STR);
-		$stmt->bindParam(':recipient', $_POST['pRecipient'], PDO::PARAM_STR);
-		$stmt->bindParam(':eventReminder', $_POST['pEventReminder'], PDO::PARAM_INT);
+		$stmt->bindParam(':recipient', $recipient, PDO::PARAM_STR);
 		$stmt->bindParam(':newAnnouncement', $_POST['pNewAnnouncement'], PDO::PARAM_INT);
 		$stmt->bindParam(':newTutoring', $_POST['pNewTutoring'], PDO::PARAM_INT);
 		$stmt->bindParam(':newEvents', $_POST['pNewEvents'], PDO::PARAM_INT);

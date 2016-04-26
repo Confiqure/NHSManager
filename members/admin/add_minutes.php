@@ -30,6 +30,12 @@ try {
 		mail($row['recipient'], 'NHS Alerts', 'The minutes for ' . $_POST['date'] . ' have been posted!');
 		$count++;
 	}
+	$stmt = $dbh->prepare('SELECT * FROM `notification_phone` WHERE `newMinutes` = 1');
+	$stmt->execute();
+	while ($row = $stmt->fetch()) {
+		mail($row['recipient'], '', 'The minutes for ' . $_POST['date'] . ' have been posted!');
+		$count++;
+	}
 	file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + $count);
 	unset($stmt);
 	unset($dbh);

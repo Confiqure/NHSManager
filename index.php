@@ -135,7 +135,7 @@ try {
 			<div class="row">
 				<div class="col-sm-8">
 					<h2>What We Do</h2>
-					<p>The National Honor Society is a group of honors students at Bow High School who have been carefully picked to represent our school. The National Honor Society handles most of the volunteering that the school does for organizations as well as provides free tutoring services to the school. To date, our Chapter has accumulated <b><?php echo floor($total_community); ?></b> community service hours and <b><?php echo floor($total_tutoring); ?></b> tutoring hours while also hosting over <b><?php echo $events; ?></b> events ranging from community service to fundraising for our school and community. <a href="https://docs.google.com/forms/d/1NaGzCJ5m-7ihMaNPuD6oij5igycsg93JvsMt85j3oug/viewform" target="_blank">Let us know if you need tutoring help!</a></p>
+					<p>The National Honor Society is a group of honors students at Bow High School who have been carefully picked to represent our school. The National Honor Society handles most of the volunteering that the school does for organizations as well as provides free tutoring services to the school. This year, our Chapter has accumulated over <b><?php echo floor($total_community); ?></b> community service hours and <b><?php echo floor($total_tutoring); ?></b> tutoring hours while also hosting over <b><?php echo $events; ?></b> events ranging from community service to fundraising for our school and community. <a href="https://docs.google.com/forms/d/1NaGzCJ5m-7ihMaNPuD6oij5igycsg93JvsMt85j3oug/viewform" target="_blank">Let us know if you need our tutors!</a></p>
 				</div>
 				<div class="col-sm-4">
 					<h2>Advisors</h2>
@@ -143,7 +143,7 @@ try {
 						<strong>William Dodge</strong>
 						<br />Integrated Geometry Teacher
 						<br />Pre-Calculus and Calculus Teacher
-						<br />Math Team Advisor
+						<br />Math Team Coach
 						<br /><a href="mailto:wdodge@bownet.org">wdodge@bownet.org</a>
 					</address>
 					<address>

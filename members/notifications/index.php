@@ -58,11 +58,11 @@ try {
 
 	<title>National Honor Society</title>
 
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../images/logo144.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../../images/logo114.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../../images/logo72.png">
-	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="../../images/logo57.png">
-	<link rel="shortcut icon" href="../images/favicon.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../../images/logo144.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../../../images/logo114.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../../../images/logo72.png">
+	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="../../../images/logo57.png">
+	<link rel="shortcut icon" href="../../../images/favicon.png">
 
 	<!-- Bootstrap Core CSS -->
 	<link href="../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -89,7 +89,7 @@ try {
 							<!-- Nav tabs -->
 							<ul class="nav nav-tabs">
 								<li class="active"><a href="#email" data-toggle="tab">Email Notifications</a></li>
-								<li><a href="#phone" data-toggle="tab">Text Notifications (coming soon)</a></li>
+								<li><a href="#phone" data-toggle="tab">Text Notifications</a></li>
 							</ul>
 							<!-- Tab panes -->
 							<div class="tab-content">
@@ -107,7 +107,7 @@ try {
 										<div class="col-sm-12">
 											<div class="form-group">
 												<label>Email Address</label>
-												<input class="form-control" type="email" id="eRecipient" name="eRecipient" maxlength="128" placeholder="Enter a valid email address to send notifications to" value="<?php if ($eSettings !== false) echo $eSettings['recipient'] . '"'; else echo '" disabled'; ?> />
+												<input class="form-control" type="email" id="eRecipient" name="eRecipient" maxlength="128" placeholder="Enter a valid email address to send notifications to" value=<?php if ($eSettings !== false) echo '"' . $eSettings['recipient'] . '"'; else echo '"" disabled'; ?> />
 											</div>
 										</div>
 										<div class="col-sm-12">
@@ -153,10 +153,23 @@ try {
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-sm-12">
+										<div class="col-sm-6">
 											<div class="form-group">
 												<label>Phone Number</label>
-												<input class="form-control" type="tel" id="pRecipient" name="pRecipient" maxlength="16" placeholder="Enter a valid phone number to send notifications to" value="<?php if ($pSettings !== false) echo $pSettings['recipient'] . '"'; else echo '" disabled'; ?> />
+												<input class="form-control" type="tel" id="pRecipient" name="pRecipient" maxlength="10" placeholder="Enter your 10 digit phone number" value=<?php if ($pSettings !== false) echo '"' . substr($pSettings['recipient'], 0, 10) . '"'; else echo '"" disabled'; ?> />
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label>Phone Carrier</label>
+												<select class="form-control" id="pCarrier" name="pCarrier"<?php if ($pSettings === false) echo ' disabled'; ?>>
+													<option<?php if ($pSettings !== false && strpos($pSettings['recipient'], "@txt.att.net") !== false) echo ' selected'; ?>>AT&T</option>
+													<option<?php if ($pSettings !== false && strpos($pSettings['recipient'], "@messaging.sprintpcs.com") !== false) echo ' selected'; ?>>Sprint</option>
+													<option<?php if ($pSettings !== false && strpos($pSettings['recipient'], "@tmomail.net") !== false) echo ' selected'; ?>>T-Mobile</option>
+													<option<?php if ($pSettings !== false && strpos($pSettings['recipient'], "@email.uscc.net") !== false) echo ' selected'; ?>>US Cellular</option>
+													<option<?php if ($pSettings === false || strpos($pSettings['recipient'], "@vtext.com") !== false) echo ' selected'; ?>>Verizon</option>
+													<option<?php if ($pSettings !== false && strpos($pSettings['recipient'], "@vmobl.com") !== false) echo ' selected'; ?>>Virgin Mobile</option>
+												</select>
 											</div>
 										</div>
 										<div class="col-sm-12">
@@ -226,7 +239,7 @@ try {
 		$('#enablePhone').change(function() {
 			 if ($(this).is(':checked')) {
 			 	$('#pRecipient').removeAttr('disabled');
-			 	$('#pEventReminder').removeAttr('disabled');
+			 	$('#pCarrier').removeAttr('disabled');
 			 	$('#pNewAnnouncement').removeAttr('disabled');
 			 	$('#pNewTutoring').removeAttr('disabled');
 			 	$('#pNewEvents').removeAttr('disabled');
@@ -234,7 +247,7 @@ try {
 			 	$('#pNewApproval').removeAttr('disabled');
 			 } else {
 			 	$('#pRecipient').attr('disabled', 'disabled');
-			 	$('#pEventReminder').attr('disabled', 'disabled');
+			 	$('#pCarrier').attr('disabled', 'disabled');
 			 	$('#pNewAnnouncement').attr('disabled', 'disabled');
 			 	$('#pNewTutoring').attr('disabled', 'disabled');
 			 	$('#pNewEvents').attr('disabled', 'disabled');

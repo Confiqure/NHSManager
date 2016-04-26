@@ -36,6 +36,12 @@ try {
 		mail($row['recipient'], 'NHS Alerts', 'Someone needs tutoring in ' . $_POST['subjects'] . '!');
 		$count++;
 	}
+	$stmt = $dbh->prepare('SELECT * FROM `notification_phone` WHERE `newTutoring` = 1');
+	$stmt->execute();
+	while ($row = $stmt->fetch()) {
+		mail($row['recipient'], '', 'Someone needs tutoring in ' . $_POST['subjects'] . '!');
+		$count++;
+	}
 	file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + $count);
 	unset($stmt);
 	unset($dbh);

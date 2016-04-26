@@ -41,6 +41,14 @@ try {
 			file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + 1);
 			break;
 		}
+		$stmt = $dbh->prepare('SELECT * FROM `notification_phone` WHERE `username` = :username AND `newApproval` = 1');
+		$stmt->bindParam(':username', $_GET['username'], PDO::PARAM_INT);
+		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			mail($row['recipient'], '', 'Your service hours have been checked by the Parliamentarian!');
+			file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + 1);
+			break;
+		}
 		$_SESSION['status'] = 'processed';
 	} else {
 		$_SESSION['status'] = 'error';

@@ -63,6 +63,12 @@ try {
 		mail($row['recipient'], 'NHS Alerts', 'A new event (' . $title . ') has been added to the calendar!');
 		$count++;
 	}
+	$stmt = $dbh->prepare('SELECT * FROM `notification_phone` WHERE `newEvents` = 1');
+	$stmt->execute();
+	while ($row = $stmt->fetch()) {
+		mail($row['recipient'], '', 'A new event (' . $title . ') has been added to the calendar!');
+		$count++;
+	}
 	file_put_contents('../../stats/emails_sent.txt', file_get_contents('../../stats/emails_sent.txt') + $count);
 	unset($stmt);
 	unset($dbh);
